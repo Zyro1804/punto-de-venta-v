@@ -1,0 +1,57 @@
+<p>login works! sdad</p>
+ <div class="page-login">
+           
+<div class="content">
+    <p-toast />
+  <p-card [style]="{ width: '30rem', overflow: 'hidden' }">
+
+    <!-- Logo y título -->
+    <div class="header">
+      <img src="assets/logo.png" alt="Logo" class="logo">
+
+      <h2>Punto de Venta</h2>
+      <p>Inicia sesión para continuar</p>
+    </div>
+
+    <div class="form">
+
+      <p-floatlabel>
+        <input
+          pInputText
+          id="username"
+          [(ngModel)]="username"
+          autocomplete="off"
+         [fluid]="true"
+         [invalid]="invalidSesion"
+        />
+        <label for="username">Usuario o Email</label>
+      </p-floatlabel>
+
+      <p-floatlabel>
+        <p-password
+          [(ngModel)]="password"
+          inputId="over_label"
+          [toggleMask]="true"
+          [feedback]="false"
+          autocomplete="off"
+          [fluid]="true"
+            [invalid]="invalidSesion"
+        />
+        <label for="over_label">Contraseña</label>
+      </p-floatlabel>
+
+    </div>
+
+    <!-- Botón -->
+    <div class="actions">
+      <p-button
+        label="Iniciar sesión"
+        icon="pi pi-sign-in"
+        [loading]="loading()"
+        (onClick)="logIn()"
+      />
+    </div>
+
+  </p-card>
+</div>
+</div>
