@@ -20,6 +20,7 @@
           pInputText
           id="username"
           [(ngModel)]="username"
+           (ngModelChange)="invalidSesion = false"
           autocomplete="off"
          [fluid]="true"
          [invalid]="invalidSesion"
@@ -30,6 +31,7 @@
       <p-floatlabel>
         <p-password
           [(ngModel)]="password"
+           (ngModelChange)="invalidSesion = false"
           inputId="over_label"
           [toggleMask]="true"
           [feedback]="false"
