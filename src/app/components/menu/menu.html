@@ -1,0 +1,30 @@
+<div class="menu-container">
+
+  <div class="menu-header">
+    <div class="logo">
+      PV
+    </div>
+
+    <div class="brand">
+      <span>Punto de Venta</span>
+      <small>Administración</small>
+    </div>
+  </div>
+
+  <div class="menu-content">
+    <p-panelMenu [model]="items" />
+  </div>
+<div class="menu-footer">
+
+    <p-menu
+      [model]="[
+        {
+          label: 'Cerrar sesión',
+          icon: 'pi pi-sign-out'
+        }
+      ]">
+    </p-menu>
+
+  </div>
+
+</div>

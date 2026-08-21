@@ -43,6 +43,7 @@ export class Login {
       console.log(err)
       this.messageService.add({ severity: 'warn', summary: 'Autenticacion', detail: 'Credenciales Invalidas'});
       this.invalidSesion=true
+      this.loading.set(false)
     }
   }
 
