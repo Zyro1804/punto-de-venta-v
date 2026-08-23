@@ -5,7 +5,7 @@ import { MenuModule } from '@openng/optimus-ui/menu';
 import { PanelMenuModule } from '@openng/optimus-ui/panelmenu';
 
 @Component({
-  imports: [ PanelMenuModule, MenuModule, RouterLink, ButtonModule],
+  imports: [ PanelMenuModule, MenuModule, ButtonModule],
   selector: 'app-menu',
   styleUrl: './menu.css',
   templateUrl: './menu.html',
