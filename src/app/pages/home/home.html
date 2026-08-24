@@ -1,15 +1,24 @@
-<div class="layout">
+<div class="home">
 
-  <app-menu></app-menu>
+  <aside class="desktop-menu">
+    <app-menu></app-menu>
+  </aside>
 
   <div class="main">
 
-    <app-header></app-header>
+      <app-header
+      class="header"
+      (menuClick)="openMenu()">
+    </app-header>
 
     <main class="content">
       
     </main>
 
   </div>
-
+    <p-drawer
+    [(visible)]="menuVisible"
+      position="left">
+    <app-menu></app-menu>
+  </p-drawer>
 </div>
