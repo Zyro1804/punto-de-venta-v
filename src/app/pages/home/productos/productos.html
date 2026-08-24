@@ -1,0 +1,210 @@
+<div class="container">
+    <div class="header">
+      <div class="header-info">
+        <h1>Catálogo de Productos</h1>
+        <p>Crear productos de catálogo</p>
+      </div>
+      <p-button label="Nuevo Producto"  icon="pi pi-plus" size="large" (click)="onAgregar()"></p-button>
+    </div>
+    <div class="table-container">
+      <p-table
+        class="tabla"
+        #dt2
+        [value]="productos"
+        dataKey="id"
+        size="small"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="loading"
+        [paginator]="true"
+        [globalFilterFields]="[
+          'id',
+          'nombre',
+          'descripcion',
+          'codigoBarra',
+          'categoria',
+          'subCategoria',
+          'unidadMedida',
+          'proveedor'
+        ]"
+      >
+        <!-- Buscador -->
+        <ng-template #caption>
+    
+          <div class="table-header">
+    
+            <span class="table-title">
+              Productos
+            </span>
+            <p-iconfield iconPosition="left">
+              <p-inputicon>
+                <i class="pi pi-search"></i>
+              </p-inputicon>
+              <input
+                pInputText
+                type="text"
+                (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+                placeholder="Buscar producto..."
+              />
+            </p-iconfield>
+          </div>
+        </ng-template>
+
+        <!-- Encabezados -->
+        <ng-template #header>
+          <tr>
+            <th >Clave</th>
+            <th>Producto</th>
+            <th>Código de barras</th>
+            <th>Categoría</th>
+            <th>Subcategoría</th>
+            <th>Unidad de medida</th>
+            <th>Proveedor</th>
+            <th style="width: 140px">
+              Acciones
+            </th>
+          </tr>
+
+          <!-- Filtros -->
+          <tr>
+            <th class="filter-id">
+            </th>
+            <th>
+              <p-columnFilter
+                field="nombre"
+                type="text"
+                placeholder="Producto"
+                 filterOn="input"
+                ariaLabel="Filtrar producto">
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="codigoBarra"
+                type="text"
+                placeholder="Código"
+                ariaLabel="Filtrar código">
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="categoria"
+                type="text"
+                placeholder="Categoría"
+                ariaLabel="Filtrar categoría">
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="subCategoria"
+                type="text"
+                placeholder="Subcategoría"
+                ariaLabel="Filtrar subcategoría">
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="unidadMedida"
+                type="text"
+                placeholder="Unidad"
+                ariaLabel="Filtrar unidad">
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="proveedor"
+                type="text"
+                placeholder="Proveedor"
+                ariaLabel="Filtrar proveedor">
+              </p-columnFilter>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <!-- Filas -->
+        <ng-template #body let-producto>
+          <tr>
+            <td>
+              {{ producto.id }}
+            </td>
+            <td>
+              <div class="product-info">
+                <strong>
+                  {{ producto.nombre }}
+                </strong>
+                <small>
+                  {{ producto.descripcion }}
+                </small>
+              </div>
+            </td>
+            <td>
+              {{ producto.codigoBarra }}
+            </td>
+            <td>
+              {{ producto.categoria }}
+            </td>
+            <td>
+              {{ producto.subCategoria }}
+            </td>
+            <td>
+              {{ producto.unidadMedida }}
+            </td>
+            <td>
+              {{ producto.proveedor }}
+            </td>
+            <td>
+              <div class="actions">
+                <!-- Editar -->
+                <p-button
+                  icon="pi pi-pencil"
+                  severity="info"
+                  [text]="true"
+                  [rounded]="true"
+                  pTooltip="Editar"
+                  (click)="editarProducto(producto)"
+                />
+    
+                <!-- Ver -->
+                <p-button
+                  icon="pi pi-eye"
+                  severity="secondary"
+                  [text]="true"
+                  [rounded]="true"
+                  pTooltip="Ver"
+                  (click)="verProducto(producto)"
+                />
+    
+                <!-- Eliminar -->
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [text]="true"
+                  [rounded]="true"
+                  pTooltip="Eliminar"
+                  (click)="eliminarProducto(producto)"
+                />
+    
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <!-- Sin resultados -->
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8" class="empty-message">
+              No se encontraron productos.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+</div>
+
+@if (abrirModal) {
+
+  <app-nuevo-producto
+    (cerrar)="cerrarNuevoProducto()"
+    (guardar)="guardarProducto($event)"
+  />
+
+}

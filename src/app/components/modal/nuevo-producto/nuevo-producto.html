@@ -1,0 +1,129 @@
+<p-dialog
+  header="Agregar Nuevo Producto"
+  [modal]="true"
+  [visible]="true"
+  [style]="{ width: '50rem' }"
+  [draggable]="false"
+  (onHide)="cerrarDialog()"
+>
+
+  <div class="form-producto">
+
+    <div class="section">
+
+      <h3>Información del producto</h3>
+
+      <div class="form-grid">
+
+        <div class="field field-full">
+
+          <label class="required">Descripcion</label>
+
+          <input
+            pInputText
+            [(ngModel)]="producto.nombre"
+            placeholder="Descripcion del producto"
+            required
+          />
+
+        </div>
+
+        <div class="field">
+
+          <label>Clave</label>
+
+          <input
+            pInputText
+            [(ngModel)]="producto.clave"
+            placeholder="Ej. PROD-001"
+          />
+
+        </div>
+
+        <div class="field">
+
+          <label>Código de barras</label>
+
+          <input
+            pInputText
+            [(ngModel)]="producto.codigoBarra"
+            placeholder="Código de barras"
+          />
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label>Categoría</label>
+
+          <input
+            pInputText
+            [(ngModel)]="producto.categoria"
+             placeholder="Categoría"
+          />
+        </div>
+
+        <div class="field">
+          <label>Subcategoría</label>
+
+          <input
+            pInputText
+            [(ngModel)]="producto.subCategoria"
+            placeholder="Subcategoría"
+          />
+        </div>
+
+        <div class="field">
+          <label>Unidad de medida</label>
+
+          <input
+            pInputText
+            [(ngModel)]="producto.unidadMedida"
+            placeholder="Unidad de medida"
+          />
+        </div>
+
+        <div class="field">
+          <label>Proveedor</label>
+
+          <input
+            pInputText
+            [(ngModel)]="producto.proveedor"
+            placeholder="Proveedor"
+          />
+        </div>
+
+        <div class="field">
+          <label>Marca</label>
+
+          <input
+            pInputText
+            [(ngModel)]="producto.marca"
+            placeholder="Marca"
+          />
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <ng-template #footer>
+    <p-button
+      label="Guardar producto"
+      icon="pi pi-check"
+      (click)="guardarProducto()"
+    />
+
+  </ng-template>
+
+</p-dialog>

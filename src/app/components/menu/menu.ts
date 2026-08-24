@@ -54,6 +54,11 @@ export class Menu {
           routerLink: '/productos/categorias'
         },
         {
+          label: 'Sub-Categorías',
+          icon: 'pi pi-tags',
+          routerLink: '/productos/categorias'
+        },
+        {
           label: 'Marcas',
           icon: 'pi pi-bookmark',
           routerLink: '/productos/marcas'
@@ -78,6 +83,11 @@ export class Menu {
           label: 'Salidas',
           icon: 'pi pi-arrow-up',
           routerLink: '/inventario/salidas'
+        },
+        {
+          label: 'Kardex',
+          icon: 'pi pi-book',
+          routerLink: '/inventario/salidas'
         }
       ]
     },
@@ -99,6 +109,11 @@ export class Menu {
           routerLink: '/reportes/inventario'
         }
       ]
+    },
+    {
+      label: 'Usuarios',
+      icon: 'pi pi-user',
+      routerLink: '/clientes'
     },
     {
       label: 'Configuración',

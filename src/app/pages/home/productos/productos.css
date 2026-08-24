@@ -1,0 +1,66 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.container{
+    padding: 20px;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-container{
+    display: flex;
+    flex-direction: column;
+}
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.table-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-info small {
+  color: var(--p-text-muted-color);
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 30px !important;
+}
+
+.filter-id {
+  width: 70px;
+}
+
+:host ::ng-deep p-columnfilter {
+  width: 100%;
+}
+
+:host ::ng-deep p-columnfilter input {
+  width: 100%;
+  min-width: 0;
+}
+
