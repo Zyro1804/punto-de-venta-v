@@ -1,0 +1,180 @@
+<div class="container">
+    <div class="header">
+      <div class="header-info">
+        <h1>Proveedores</h1>
+        <p>Catálogo de proveedores</p>
+      </div>
+      <p-button label="Agregar Proveedor"  icon="pi pi-plus" size="large" (click)="onAgregar()"></p-button>
+    </div>
+    <div class="table-container">
+      <p-table
+        class="tabla"
+        #dt2
+        [value]="proveedores()"
+        dataKey="id"
+        size="small"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="loading()"
+        [paginator]="true"
+        [globalFilterFields]="[
+          'nombre',
+          'contacto',
+          'telefono',
+          'email',
+          'direccion'
+        ]"
+      >
+        <!-- Buscador -->
+        <ng-template #caption>
+    
+          <div class="table-header">
+    
+            <span class="table-title">
+              Proveedores
+            </span>
+            <p-iconfield iconPosition="left">
+              <p-inputicon>
+                <i class="pi pi-search"></i>
+              </p-inputicon>
+              <input
+                pInputText
+                type="text"
+                (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+                placeholder="Buscar proveedor..."
+              />
+            </p-iconfield>
+          </div>
+        </ng-template>
+
+        <!-- Encabezados -->
+        <ng-template #header>
+          <tr>
+            <th >Nombre</th>
+            <th>Contacto</th>
+            <th>Telefono</th>
+            <th>Correo</th>
+            <th>Direccion</th>
+            <th style="width: 140px">
+              Acciones
+            </th>
+          </tr>
+
+          <!-- Filtros -->
+          <tr>
+            <th>
+              <p-columnFilter
+                field="nombre"
+                type="text"
+                placeholder="Producto"
+                 filterOn="input"
+                ariaLabel="Filtrar producto">
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="contacto"
+                type="text"
+                placeholder="Contacto"
+                ariaLabel="Filtrar contacto">
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="telefono"
+                type="text"
+                placeholder="Telefono"
+                ariaLabel="Filtrar telefono">
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="email"
+                type="text"
+                placeholder="Correo electronico"
+                ariaLabel="Filtrar correo">
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="direccion"
+                type="text"
+                placeholder="Unidad"
+                ariaLabel="Filtrar unidad">
+              </p-columnFilter>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <!-- Filas -->
+        <ng-template #body let-proveedor>
+          <tr>
+            <td>
+              {{proveedor.nombre}}
+            </td>
+            <td>
+              {{proveedor.contacto }}
+            </td>
+            <td>
+              {{ proveedor.telefono}}
+            </td>
+            <td>
+              {{ proveedor.email }}
+            </td>
+            <td>
+              {{ proveedor.direccion }}
+            </td>
+            <td>
+              <div class="actions">
+                <!-- Editar -->
+                <p-button
+                  icon="pi pi-pencil"
+                  severity="info"
+                  [text]="true"
+                  [rounded]="true"
+                  pTooltip="Editar"
+                  (click)="editarProducto(proveedor)"
+                />
+    
+                <!-- Ver -->
+                <p-button
+                  icon="pi pi-eye"
+                  severity="secondary"
+                  [text]="true"
+                  [rounded]="true"
+                  pTooltip="Ver"
+                  (click)="verProducto(proveedor)"
+                />
+    
+                <!-- Eliminar -->
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [text]="true"
+                  [rounded]="true"
+                  pTooltip="Eliminar"
+                  (click)="eliminarProducto(proveedor)"
+                />
+    
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <!-- Sin resultados -->
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8" class="empty-message">
+              No se encontraron proveedores.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+</div>
+
+@if (abrirModal) {
+    <app-nuevo-proveedor
+    (cerrar)="abrirModal=false"
+    (guardar)="crearProveedor($event)"
+    ></app-nuevo-proveedor>
+}

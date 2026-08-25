@@ -1,0 +1,107 @@
+<p-dialog
+  header="Agregar Nuevo Proveedor"
+  [modal]="true"
+  [visible]="true"
+  [style]="{ width: '50rem' }"
+  [draggable]="false"
+  (onHide)="cerrarDialog()"
+>
+
+  <div class="form-proveedor">
+
+    <div class="section">
+
+      <h3>Formulario de Proveedor</h3>
+
+      <div class="form-grid">
+
+        <div class="field field-full">
+
+          <label class="required">Nombre</label>
+
+          <input
+            pInputText
+            [(ngModel)]="proveedor.nombre"
+            placeholder="Nombre del proveedor"
+            required
+          />
+
+        </div>
+
+        <div class="field">
+
+          <label>Contacto</label>
+
+          <input
+            pInputText
+            [(ngModel)]="proveedor.contacto"
+            placeholder="Nombre de un contacto"
+            required
+          />
+
+        </div>
+
+        <div class="field">
+
+          <label>Telefono</label>
+           <input
+            pInputText
+            [(ngModel)]="proveedor.telefono"
+            type="tel"
+            inputmode="numeric"
+            maxlength="10"
+            pattern="[0-9]*"
+            placeholder="(999)-999-9999"
+            required
+            />
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label>Correo electronico</label>
+
+          <input
+            pInputText
+            [(ngModel)]="proveedor.email"
+             placeholder="Correo Electronico"
+             required
+          />
+        </div>
+
+        <div class="field">
+          <label>Direccion</label>
+
+          <input
+            pInputText
+            [(ngModel)]="proveedor.direccion"
+            placeholder="Direccion de proveedor"
+            required
+          />
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <ng-template #footer>
+    <p-button
+      label="Guardar producto"
+      icon="pi pi-check"
+      (click)="guardarProducto()"
+    />
+
+  </ng-template>
+
+</p-dialog>

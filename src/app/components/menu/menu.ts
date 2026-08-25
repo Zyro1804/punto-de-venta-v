@@ -62,6 +62,11 @@ export class Menu {
           label: 'Marcas',
           icon: 'pi pi-bookmark',
           routerLink: '/productos/marcas'
+        },
+        {
+          label: 'Proveedores',
+          icon: 'pi pi-bookmark',
+          routerLink: '/productos/proveedores'
         }
       ]
     },
