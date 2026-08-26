@@ -7,7 +7,8 @@ import { TableModule } from '@openng/optimus-ui/table';
 import { firstValueFrom } from 'rxjs';
 import { ProveedorService } from '../../../services/proveedor/proveedor-service';
 import { NuevoProveedor } from '../../../components/modal/nuevo-proveedor/nuevo-proveedor';
-import { MessageService } from '@openng/optimus-ui/api';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
+import { ConfirmDialogModule } from '@openng/optimus-ui/confirmdialog';
 
 export interface Proveedor {
   id: string;
@@ -22,7 +23,7 @@ export interface Proveedor {
 }
 
 @Component({
-  imports: [ButtonModule,TableModule, InputIconModule, IconFieldModule, InputTextModule, NuevoProveedor],
+  imports: [ButtonModule,TableModule, InputIconModule, IconFieldModule, InputTextModule, NuevoProveedor, ConfirmDialogModule],
   selector: 'app-proveedores',
   styleUrl: './proveedores.css',
   templateUrl: './proveedores.html',
@@ -31,6 +32,7 @@ export class Proveedores implements OnInit{
   
   private proveedorService = inject(ProveedorService)
   private messageService = inject(MessageService)
+  private confirmationService = inject(ConfirmationService);
   
   proveedores = signal<Proveedor[]>([]);
    loading = signal(true);
@@ -64,16 +66,54 @@ export class Proveedores implements OnInit{
     console.log('Ver:', producto);
   }
 
-   async eliminarProducto(producto: any) {
-    console.log('Eliminar:', producto.id);
-    try{
-      const resp= await firstValueFrom(this.proveedorService.eliminarProducto(producto.id))
-      this.messageService.add({ severity: 'success', summary: 'Proveedor eliminado', detail: resp.message});
-       this.getProveedores()
-    }catch(err:any){
-      console.log(err)
+  async eliminarProveedor(proveedor: any, event : Event) {
+
+  this.confirmationService.confirm({
+    target: event.target as EventTarget,
+    message: `¿Deseas eliminar al proveedor "${proveedor.nombre}"?`,
+    header: 'Confirmar eliminación',
+    icon: 'pi pi-exclamation-triangle',
+    rejectLabel: 'Cancelar',
+    rejectButtonProps: {
+      label: 'Cancelar',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptButtonProps: {
+      label: 'Eliminar',
+      severity: 'danger'
+    },
+    accept: async () => {
+      try {
+        const resp = await firstValueFrom(
+          this.proveedorService.eliminarProducto(proveedor.id)
+        );
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Proveedor eliminado',
+          detail: resp.message
+        });
+        this.getProveedores();
+      } catch (err: any) {
+        console.error(err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err?.error?.message || 'No se pudo eliminar el proveedor'
+        });
+      }
+    },
+    reject: () => {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Cancelado',
+        detail: 'La eliminación fue cancelada'
+      });
+
     }
-  }
+  });
+
+}
 
   async crearProveedor(event:any){
     console.log(event,'Aqui en padre')

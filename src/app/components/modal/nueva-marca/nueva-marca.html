@@ -1,0 +1,59 @@
+<p-dialog
+  header="Agregar Nuevo Producto"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [visible]="true"
+  [style]="{ width: '50rem' }"
+  [draggable]="false"
+  (onHide)="cerrarDialog()"
+>
+
+  <div class="form-producto">
+
+    <div class="section">
+
+      <h3>Información de la Marca</h3>
+
+      <div class="form-grid">
+
+        <div class="field ">
+
+          <label class="required">Nombre</label>
+
+          <input
+            pInputText
+            [(ngModel)]="marca.nombre"
+            placeholder="Nombre de la Marca"
+            required
+          />
+
+        </div>
+
+        <div class="field field-full">
+
+          <label>Descripcion</label>
+
+          <input
+            pInputText
+            [(ngModel)]="marca.descripcion"
+            placeholder=""
+          />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <ng-template #footer>
+    <p-button
+      label="Guardar marca"
+      icon="pi pi-check"
+      (click)="guardarMarca()"
+    />
+
+  </ng-template>
+
+</p-dialog>

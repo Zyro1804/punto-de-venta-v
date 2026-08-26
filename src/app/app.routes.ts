@@ -3,6 +3,7 @@ import { Login } from './pages/login/login';
 import { Home } from './pages/home/home';
 import { Productos } from './pages/home/productos/productos';
 import { Proveedores } from './pages/home/proveedores/proveedores';
+import { Marcas } from './pages/home/marcas/marcas';
 
 export const routes: Routes = [
     {
@@ -12,7 +13,8 @@ export const routes: Routes = [
         path:'home', component: Home,
         children: [
             { path:'productos', component: Productos },
-            { path:'proveedores', component: Proveedores }
+            { path:'proveedores', component: Proveedores },
+            { path: 'marcas', component: Marcas}
         ]
     }
 ];

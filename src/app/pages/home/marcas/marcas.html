@@ -1,16 +1,16 @@
 <div class="container">
     <div class="header">
       <div class="header-info">
-        <h1>Proveedores</h1>
-        <p>Catálogo de proveedores</p>
+        <h1>Marcas</h1>
+        <p>Catálogo de marcas</p>
       </div>
-      <p-button label="Agregar Proveedor"  icon="pi pi-plus" size="large" (click)="onAgregar()"></p-button>
+      <p-button label="Agregar Marca"  icon="pi pi-plus" size="large" (click)="onAgregar()"></p-button>
     </div>
     <div class="table-container">
       <p-table
         class="tabla"
         #dt2
-        [value]="proveedores()"
+        [value]="marca()"
         dataKey="id"
         size="small"
         [rows]="10"
@@ -19,10 +19,7 @@
         [paginator]="true"
         [globalFilterFields]="[
           'nombre',
-          'contacto',
-          'telefono',
-          'email',
-          'direccion'
+          'descripcion',
         ]"
       >
         <!-- Buscador -->
@@ -41,7 +38,7 @@
                 pInputText
                 type="text"
                 (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
-                placeholder="Buscar proveedor..."
+                placeholder="Buscar marca..."
               />
             </p-iconfield>
           </div>
@@ -51,10 +48,7 @@
         <ng-template #header>
           <tr>
             <th >Nombre</th>
-            <th>Contacto</th>
-            <th>Telefono</th>
-            <th>Correo</th>
-            <th>Direccion</th>
+            <th>Descripcion</th>
             <th style="width: 140px">
               Acciones
             </th>
@@ -66,63 +60,30 @@
               <p-columnFilter
                 field="nombre"
                 type="text"
-                placeholder="Producto"
+                placeholder="Nombre"
                  filterOn="input"
-                ariaLabel="Filtrar producto">
+                ariaLabel="Filtrar marca">
               </p-columnFilter>
             </th>
             <th>
               <p-columnFilter
-                field="contacto"
+                field="descripcion"
                 type="text"
-                placeholder="Contacto"
-                ariaLabel="Filtrar contacto">
-              </p-columnFilter>
-            </th>
-            <th>
-              <p-columnFilter
-                field="telefono"
-                type="text"
-                placeholder="Telefono"
-                ariaLabel="Filtrar telefono">
-              </p-columnFilter>
-            </th>
-            <th>
-              <p-columnFilter
-                field="email"
-                type="text"
-                placeholder="Correo electronico"
-                ariaLabel="Filtrar correo">
-              </p-columnFilter>
-            </th>
-            <th>
-              <p-columnFilter
-                field="direccion"
-                type="text"
-                placeholder="Unidad"
-                ariaLabel="Filtrar unidad">
+                placeholder="Descripcion"
+                ariaLabel="Filtrar Descripcion">
               </p-columnFilter>
             </th>
             <th></th>
           </tr>
         </ng-template>
         <!-- Filas -->
-        <ng-template #body let-proveedor>
+        <ng-template #body let-marca>
           <tr>
             <td>
-              {{proveedor.nombre}}
+              {{marca.nombre}}
             </td>
             <td>
-              {{proveedor.contacto }}
-            </td>
-            <td>
-              {{ proveedor.telefono}}
-            </td>
-            <td>
-              {{ proveedor.email }}
-            </td>
-            <td>
-              {{ proveedor.direccion }}
+              {{marca.descripcion }}
             </td>
             <td>
               <div class="actions">
@@ -133,7 +94,7 @@
                   [text]="true"
                   [rounded]="true"
                   pTooltip="Editar"
-                  (click)="editarProducto(proveedor)"
+                  (click)="editarMarca(marca)"
                 />
     
                 <!-- Ver -->
@@ -143,7 +104,7 @@
                   [text]="true"
                   [rounded]="true"
                   pTooltip="Ver"
-                  (click)="verProducto(proveedor)"
+                  (click)="verMarca(marca)"
                 />
     
                 <!-- Eliminar -->
@@ -153,7 +114,7 @@
                   [text]="true"
                   [rounded]="true"
                   pTooltip="Eliminar"
-                  (click)="eliminarProveedor(proveedor, $event)"
+                  (click)="eliminarMarca(marca, $event)"
                 />
     
               </div>
@@ -172,9 +133,10 @@
     </div>
 </div>
 
+
 @if (abrirModal) {
-    <app-nuevo-proveedor
+    <app-nueva-marca
     (cerrar)="abrirModal=false"
-    (guardar)="crearProveedor($event)"
-    ></app-nuevo-proveedor>
+    (guardar)="crearMarca($event)"
+    ></app-nueva-marca>
 }
