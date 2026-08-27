@@ -5,8 +5,8 @@ import { InputIconModule } from '@openng/optimus-ui/inputicon';
 import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { TableModule } from '@openng/optimus-ui/table';
 import { firstValueFrom } from 'rxjs';
-import { ProveedorService } from '../../../services/proveedor/proveedor-service';
-import { NuevoProveedor } from '../../../components/modal/nuevo-proveedor/nuevo-proveedor';
+import { ProveedorService } from '../../../../services/proveedor/proveedor-service';
+import { NuevoProveedor } from '../../../../components/modal/nuevo-proveedor/nuevo-proveedor';
 import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { ConfirmDialogModule } from '@openng/optimus-ui/confirmdialog';
 

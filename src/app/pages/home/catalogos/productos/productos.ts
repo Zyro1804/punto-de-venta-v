@@ -4,7 +4,7 @@ import { IconFieldModule } from '@openng/optimus-ui/iconfield';
 import { InputIconModule } from '@openng/optimus-ui/inputicon';
 import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { TableModule } from '@openng/optimus-ui/table';
-import { NuevoProducto } from '../../../components/modal/nuevo-producto/nuevo-producto';
+import { NuevoProducto } from '../../../../components/modal/nuevo-producto/nuevo-producto';
 import { MessageService } from '@openng/optimus-ui/api';
 
 @Component({

@@ -47,6 +47,7 @@
         <!-- Encabezados -->
         <ng-template #header>
           <tr>
+            <th>Num.</th>
             <th >Nombre</th>
             <th>Descripcion</th>
             <th style="width: 140px">
@@ -56,6 +57,7 @@
 
           <!-- Filtros -->
           <tr>
+            <th></th>
             <th>
               <p-columnFilter
                 field="nombre"
@@ -70,6 +72,7 @@
                 field="descripcion"
                 type="text"
                 placeholder="Descripcion"
+                filterOn="input"
                 ariaLabel="Filtrar Descripcion">
               </p-columnFilter>
             </th>
@@ -77,8 +80,9 @@
           </tr>
         </ng-template>
         <!-- Filas -->
-        <ng-template #body let-marca>
+        <ng-template #body let-marca let-rowIndex="rowIndex">
           <tr>
+            <td>{{ rowIndex + 1}}</td>
             <td>
               {{marca.nombre}}
             </td>
@@ -98,14 +102,14 @@
                 />
     
                 <!-- Ver -->
-                <p-button
+                <!-- <p-button
                   icon="pi pi-eye"
                   severity="secondary"
                   [text]="true"
                   [rounded]="true"
                   pTooltip="Ver"
                   (click)="verMarca(marca)"
-                />
+                /> -->
     
                 <!-- Eliminar -->
                 <p-button

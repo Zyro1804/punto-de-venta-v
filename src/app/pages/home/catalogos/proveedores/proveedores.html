@@ -50,6 +50,7 @@
         <!-- Encabezados -->
         <ng-template #header>
           <tr>
+            <th>Num.</th>
             <th >Nombre</th>
             <th>Contacto</th>
             <th>Telefono</th>
@@ -62,6 +63,7 @@
 
           <!-- Filtros -->
           <tr>
+            <th></th>
             <th>
               <p-columnFilter
                 field="nombre"
@@ -76,6 +78,7 @@
                 field="contacto"
                 type="text"
                 placeholder="Contacto"
+                 filterOn="input"
                 ariaLabel="Filtrar contacto">
               </p-columnFilter>
             </th>
@@ -84,6 +87,7 @@
                 field="telefono"
                 type="text"
                 placeholder="Telefono"
+                 filterOn="input"
                 ariaLabel="Filtrar telefono">
               </p-columnFilter>
             </th>
@@ -92,6 +96,7 @@
                 field="email"
                 type="text"
                 placeholder="Correo electronico"
+                 filterOn="input"
                 ariaLabel="Filtrar correo">
               </p-columnFilter>
             </th>
@@ -99,7 +104,8 @@
               <p-columnFilter
                 field="direccion"
                 type="text"
-                placeholder="Unidad"
+                placeholder="Direccion"
+                 filterOn="input"
                 ariaLabel="Filtrar unidad">
               </p-columnFilter>
             </th>
@@ -107,8 +113,9 @@
           </tr>
         </ng-template>
         <!-- Filas -->
-        <ng-template #body let-proveedor>
+        <ng-template #body let-proveedor let-rowIndex="rowIndex">
           <tr>
+           <td>{{ rowIndex + 1 }}</td>
             <td>
               {{proveedor.nombre}}
             </td>
@@ -137,7 +144,7 @@
                 />
     
                 <!-- Ver -->
-                <p-button
+                <!-- <p-button
                   icon="pi pi-eye"
                   severity="secondary"
                   [text]="true"
@@ -145,7 +152,7 @@
                   pTooltip="Ver"
                   (click)="verProducto(proveedor)"
                 />
-    
+     -->
                 <!-- Eliminar -->
                 <p-button
                   icon="pi pi-trash"

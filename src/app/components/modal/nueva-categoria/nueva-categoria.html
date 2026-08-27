@@ -1,5 +1,5 @@
 <p-dialog
-  header="Agregar Nuevo Producto"
+  header="Agregar Nuevo Categoria"
   [modal]="true"
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
   [visible]="true"
@@ -12,7 +12,7 @@
 
     <div class="section">
 
-      <h3>Información de la Marca</h3>
+      <h3>Información de la Categoria</h3>
 
       <div class="form-grid">
 
@@ -22,8 +22,8 @@
 
           <input
             pInputText
-            [(ngModel)]="marca.nombre"
-            placeholder="Nombre de la Marca"
+            [(ngModel)]="categoria.nombre"
+            placeholder="Nombre de la Categoria"
             required
           />
 
@@ -35,8 +35,8 @@
 
           <input
             pInputText
-            [(ngModel)]="marca.descripcion"
-            placeholder="Descripcion de la Marca"
+            [(ngModel)]="categoria.descripcion"
+            placeholder="Descripcion de la Categoria"
           />
 
         </div>
@@ -49,9 +49,9 @@
 
   <ng-template #footer>
     <p-button
-      label="Guardar marca"
+      label="Guardar categoria"
       icon="pi pi-check"
-      (click)="guardarMarca()"
+      (click)="guardarCategoria()"
     />
 
   </ng-template>

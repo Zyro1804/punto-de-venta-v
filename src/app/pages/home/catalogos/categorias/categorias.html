@@ -1,0 +1,149 @@
+<div class="container">
+    <div class="header">
+      <div class="header-info">
+        <h1>Categorias</h1>
+        <p>Catálogo de categorias</p>
+      </div>
+      <p-button label="Agregar Categoria"  icon="pi pi-plus" size="large" (click)="onAgregar()"></p-button>
+    </div>
+    <div class="table-container">
+      <p-table
+        class="tabla"
+        #dt2
+        [value]="categorias()"
+        dataKey="id"
+        size="small"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="loading()"
+        [paginator]="true"
+        [globalFilterFields]="[
+          'nombre',
+          'descripcion',
+        ]"
+      >
+        <!-- Buscador -->
+        <ng-template #caption>
+    
+          <div class="table-header">
+    
+            <span class="table-title">
+              
+            </span>
+            <p-iconfield iconPosition="left">
+              <p-inputicon>
+                <i class="pi pi-search"></i>
+              </p-inputicon>
+              <input
+                pInputText
+                type="text"
+                (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+                placeholder="Buscar categoria..."
+              />
+            </p-iconfield>
+          </div>
+        </ng-template>
+
+        <!-- Encabezados -->
+        <ng-template #header>
+          <tr>
+            <th>Num.</th>
+            <th >Nombre</th>
+            <th>Descripcion</th>
+            <th>Subcategorias</th>
+            <th style="width: 140px">
+              Acciones
+            </th>
+          </tr>
+
+          <!-- Filtros -->
+          <tr>
+            <th></th>
+            <th>
+              <p-columnFilter
+                field="nombre"
+                type="text"
+                placeholder="Nombre"
+                 filterOn="input"
+                ariaLabel="Filtrar categoria">
+              </p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                field="descripcion"
+                type="text"
+                placeholder="Descripcion"
+                filterOn="input"
+                ariaLabel="Filtrar Descripcion">
+              </p-columnFilter>
+            </th>
+            <th></th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <!-- Filas -->
+        <ng-template #body let-categoria let-rowIndex="rowIndex">
+          <tr>
+            <td>{{ rowIndex + 1}}</td>
+            <td>
+              {{categoria.nombre}}
+            </td>
+            <td>
+              {{categoria.descripcion }}
+            </td>
+            <td></td>
+            <td>
+              <div class="actions">
+                <!-- Editar -->
+                <p-button
+                  icon="pi pi-pencil"
+                  severity="info"
+                  [text]="true"
+                  [rounded]="true"
+                  pTooltip="Editar"
+                  (click)="editarCategoria(categoria)"
+                />
+    
+                <!-- Ver -->
+                <!-- <p-button
+                  icon="pi pi-eye"
+                  severity="secondary"
+                  [text]="true"
+                  [rounded]="true"
+                  pTooltip="Ver"
+                  (click)="verMarca(marca)"
+                /> -->
+    
+                <!-- Eliminar -->
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [text]="true"
+                  [rounded]="true"
+                  pTooltip="Eliminar"
+                  (click)="eliminarCategoria(categoria, $event)"
+                />
+    
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <!-- Sin resultados -->
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8" class="empty-message">
+              No se encontraron categorias.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+</div>
+
+
+@if (abrirModal) {
+    <app-nueva-categoria
+    (cerrar)="abrirModal=false"
+    (guardar)="crearCategoria($event)"
+    ></app-nueva-categoria>
+}

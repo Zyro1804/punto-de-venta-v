@@ -46,27 +46,27 @@ export class Menu {
         {
           label: 'Productos',
           icon: 'pi pi-list',
-          routerLink: '/productos'
+          routerLink: 'productos'
         },
         {
           label: 'Categorías',
-          icon: 'pi pi-tags',
-          routerLink: '/productos/categorias'
+          icon: 'pi pi-tag',
+          routerLink: 'categorias'
         },
         {
           label: 'Sub-Categorías',
           icon: 'pi pi-tags',
-          routerLink: '/productos/categorias'
+          routerLink: 'subcategorias'
         },
         {
           label: 'Marcas',
           icon: 'pi pi-bookmark',
-          routerLink: '/productos/marcas'
+          routerLink: 'marcas'
         },
         {
           label: 'Proveedores',
-          icon: 'pi pi-bookmark',
-          routerLink: '/productos/proveedores'
+          icon: 'pi pi-truck',
+          routerLink: 'proveedores'
         }
       ]
     },

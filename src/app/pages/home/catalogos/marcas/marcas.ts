@@ -5,10 +5,10 @@ import { IconFieldModule } from '@openng/optimus-ui/iconfield';
 import { InputIconModule } from '@openng/optimus-ui/inputicon';
 import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { TableModule } from '@openng/optimus-ui/table';
-import { MarcaService } from '../../../services/marca/marca-service';
+import { MarcaService } from '../../../../services/marca/marca-service';
 import { firstValueFrom } from 'rxjs';
-import { NuevaMarca } from '../../../components/modal/nueva-marca/nueva-marca';
-import { MessageService } from '@openng/optimus-ui/api';
+import { NuevaMarca } from '../../../../components/modal/nueva-marca/nueva-marca';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 
 export interface Marca{
   id:string;
@@ -31,6 +31,7 @@ export class Marcas {
 
   private readonly marcasService= inject(MarcaService)
   private readonly messageService = inject(MessageService)
+  private confirmationService = inject(ConfirmationService)
 
    ngOnInit(): void {
     this.getMarcas()
@@ -55,7 +56,52 @@ export class Marcas {
 
   verMarca(producto: any) {}
 
-  async eliminarMarca(proveedor: any, event : Event) {}
+  async eliminarMarca(marca: any, event : Event) {
+    this.confirmationService.confirm({
+    target: event.target as EventTarget,
+    message: `¿Deseas eliminar la marca "${marca.nombre}"?`,
+    header: 'Confirmar eliminación',
+    icon: 'pi pi-exclamation-triangle',
+    rejectLabel: 'Cancelar',
+    rejectButtonProps: {
+      label: 'Cancelar',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptButtonProps: {
+      label: 'Eliminar',
+      severity: 'danger'
+    },
+    accept: async () => {
+      try {
+        const resp = await firstValueFrom(
+          this.marcasService.eliminarMarca(marca.id)
+        );
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Marca eliminado',
+          detail: resp.message
+        });
+        this.getMarcas();
+      } catch (err: any) {
+        console.error(err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err?.error?.message || 'No se pudo eliminar el proveedor'
+        });
+      }
+    },
+    reject: () => {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Cancelado',
+        detail: 'La eliminación fue cancelada'
+      });
+
+    }
+  });
+  }
 
   async crearMarca(event:any){
     console.log(event)
@@ -64,6 +110,7 @@ export class Marcas {
        this.messageService.add({ severity: 'success', summary: 'Marca', detail: resp.message});
       console.log(resp)
       this.getMarcas();
+      this.abrirModal=false
     }catch(err:any){
 
     }
