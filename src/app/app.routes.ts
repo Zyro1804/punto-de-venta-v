@@ -6,6 +6,7 @@ import { Proveedores } from './pages/home/catalogos/proveedores/proveedores';
 import { Marcas } from './pages/home/catalogos/marcas/marcas';
 import { Categorias } from './pages/home/catalogos/categorias/categorias';
 import { Subcategoria } from './pages/home/catalogos/subcategoria/subcategoria';
+import { UnidadDeMedida } from './pages/home/catalogos/unidad-de-medida/unidad-de-medida';
 
 export const routes: Routes = [
     {
@@ -18,7 +19,8 @@ export const routes: Routes = [
             { path:'proveedores', component : Proveedores },
             { path: 'marcas', component : Marcas},
             { path: 'categorias', component : Categorias},
-            { path:'subcategorias', component : Subcategoria}
+            { path:'subcategorias', component : Subcategoria},
+            { path:'unidades-de-medida', component : UnidadDeMedida}
         ]
     }
 ];

@@ -4,13 +4,13 @@
         <h1>Catálogo de Productos</h1>
         <p>Crear productos de catálogo</p>
       </div>
-      <p-button label="Nuevo Producto"  icon="pi pi-plus" size="large" (click)="onAgregar()"></p-button>
+      <p-button label="Nuevo Producto"  icon="pi pi-plus" size="large" [loading]="loadingTipos()" (click)="onAgregar()"></p-button>
     </div>
     <div class="table-container">
       <p-table
         class="tabla"
         #dt2
-        [value]="productos"
+        [value]="productos()"
         dataKey="id"
         size="small"
         [rows]="10"
@@ -52,6 +52,7 @@
         <!-- Encabezados -->
         <ng-template #header>
           <tr>
+            <th >Num.</th>
             <th >Clave</th>
             <th>Producto</th>
             <th>Código de barras</th>
@@ -66,6 +67,7 @@
 
           <!-- Filtros -->
           <tr>
+            <th></th>
             <th class="filter-id">
             </th>
             <th>
@@ -123,6 +125,7 @@
         <!-- Filas -->
         <ng-template #body let-producto>
           <tr>
+            <td></td>
             <td>
               {{ producto.id }}
             </td>
@@ -202,6 +205,11 @@
 @if (abrirModal) {
 
   <app-nuevo-producto
+    [categorias]="categorias"
+    [subcategorias]="subcategorias"
+    [unidadesDeMedida]="unidadesDeMedida"
+    [proveedores]="proveedores"
+    [marcas]="marcas"
     (cerrar)="cerrarNuevoProducto()"
     (guardar)="guardarProducto($event)"
   />

@@ -67,6 +67,11 @@ export class Menu {
           label: 'Proveedores',
           icon: 'pi pi-truck',
           routerLink: 'proveedores'
+        },
+        {
+          label: 'Unidades de Medida',
+          icon: 'pi pi-calculator',
+          routerLink: 'unidades-de-medida'
         }
       ]
     },

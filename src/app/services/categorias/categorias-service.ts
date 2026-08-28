@@ -18,6 +18,6 @@ export class CategoriasService {
     }
 
     eliminarCategoria(id:string){
-        return this.http.delete<any>(`${this.categoriaUrl}/elimar/${id}`)
+        return this.http.delete<any>(`${this.categoriaUrl}/eliminar/${id}`)
     }
 }

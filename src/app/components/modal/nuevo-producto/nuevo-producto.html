@@ -18,7 +18,7 @@
 
         <div class="field field-full">
 
-          <label class="required">Descripcion</label>
+          <label class="required"><i class="pi pi-align-left"></i>Descripcion</label>
 
           <input
             pInputText
@@ -31,7 +31,7 @@
 
         <div class="field">
 
-          <label>Clave</label>
+          <label><i class="pi pi-key"></i>Clave</label>
 
           <input
             pInputText
@@ -43,7 +43,7 @@
 
         <div class="field">
 
-          <label>Código de barras</label>
+          <label><i class="pi pi-barcode"></i>Código de barras</label>
 
           <input
             pInputText
@@ -63,54 +63,117 @@
       <div class="form-grid">
 
         <div class="field">
-          <label>Categoría</label>
 
-          <input
-            pInputText
-            [(ngModel)]="producto.categoria"
-             placeholder="Categoría"
+          <label class="required"><i class="pi pi-tags"></i>Categoría</label>
+            <p-select
+              [options]="categorias"
+              [(ngModel)]="producto.categoria"
+              (ngModelChange)="actualizarSubcategorias()"
+              optionLabel="nombre"
+              optionValue="id"
+              placeholder="Selecciona una categoría"
+              [filter]="true"
+              filterBy="nombre"
+              [showClear]="true"
+              appendTo="body"
+              class="w-full"
           />
-        </div>
+      </div>
 
         <div class="field">
-          <label>Subcategoría</label>
+          <label><i class="pi pi-tag"></i>Subcategoría</label>
 
-          <input
-            pInputText
+          <p-select
+            [options]="subcategoriasDisponibles"
             [(ngModel)]="producto.subCategoria"
-            placeholder="Subcategoría"
+            optionLabel="nombre"
+            optionValue="id"
+            placeholder="Selecciona una subcategoría"
+            [filter]="true"
+            filterBy="nombre"
+            [showClear]="true"
+            [disabled]="!producto.categoria"
+            appendTo="body"
+            class="w-full"
           />
         </div>
 
         <div class="field">
-          <label>Unidad de medida</label>
+          <label><i class="pi pi-calculator"></i>Unidad de medida</label>
 
-          <input
-            pInputText
+          <p-select
+            [options]="unidadesDeMedida"
             [(ngModel)]="producto.unidadMedida"
-            placeholder="Unidad de medida"
+            optionLabel="abreviatura"
+            optionValue="id"
+            placeholder="Selecciona una unidad"
+            [filter]="true"
+            filterBy="nombre"
+            [showClear]="true"
+            appendTo="body"
+            class="w-full"
+          />
+        </div>
+
+          <div class="field">
+          <label><i class="pi pi-expand"></i>Tamaño</label>
+
+        <input
+            pInputText
+            [(ngModel)]="producto.cantidad"
+            placeholder="Tamaño del Producto"
+          />
+        </div>
+             <div class="field">
+          <label class="required"><i class="pi pi-dollar"></i>Costo</label>
+
+          <input
+            pInputText
+            type="number"
+            [(ngModel)]="producto.costo"
+            placeholder="$0.00"
+            min="0"
+            step="0.01"
+            required
           />
         </div>
 
         <div class="field">
-          <label>Proveedor</label>
+          <label><i class="pi pi-truck"></i>Proveedor</label>
 
-          <input
-            pInputText
+          <p-select
+            [options]="proveedores"
             [(ngModel)]="producto.proveedor"
-            placeholder="Proveedor"
+            optionLabel="nombre"
+            optionValue="id"
+            placeholder="Selecciona un proveedor"
+            [filter]="true"
+            filterBy="nombre"
+            [showClear]="true"
+            appendTo="body"
+            class="w-full"
           />
         </div>
+
+      
 
         <div class="field">
-          <label>Marca</label>
+          <label><i class="pi pi-bookmark"></i>Marca</label>
 
-          <input
-            pInputText
+          <p-select
+            [options]="marcas"
             [(ngModel)]="producto.marca"
-            placeholder="Marca"
+            optionLabel="nombre"
+            optionValue="id"
+            placeholder="Selecciona una marca"
+            [filter]="true"
+            filterBy="nombre"
+            [showClear]="true"
+            appendTo="body"
+            class="w-full"
           />
         </div>
+     
 
       </div>
 

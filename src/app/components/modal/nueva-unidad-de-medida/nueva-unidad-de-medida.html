@@ -1,0 +1,18 @@
+<p-dialog header="Agregar nueva unidad de medida" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [visible]="true" [style]="{ width: '32rem' }" [draggable]="false" (onHide)="cerrarDialog()">
+	<div class="section">
+		<h3>Información de la unidad</h3>
+		<div class="form-grid">
+			<div class="field">
+				<label class="required">Nombre</label>
+				<input pInputText [(ngModel)]="unidad.nombre" placeholder="Nombre de la unidad" required />
+			</div>
+			<div class="field">
+				<label class="required">Abreviatura</label>
+				<input pInputText [(ngModel)]="unidad.abreviatura" placeholder="Ej. kg" required />
+			</div>
+		</div>
+	</div>
+	<ng-template #footer>
+		<p-button label="Guardar unidad" icon="pi pi-check" (click)="guardarUnidad()"></p-button>
+	</ng-template>
+</p-dialog>
