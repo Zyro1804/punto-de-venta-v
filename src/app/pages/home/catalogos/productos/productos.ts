@@ -5,42 +5,45 @@ import { InputIconModule } from '@openng/optimus-ui/inputicon';
 import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { TableModule } from '@openng/optimus-ui/table';
 import { NuevoProducto } from '../../../../components/modal/nuevo-producto/nuevo-producto';
-import { MessageService } from '@openng/optimus-ui/api';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { firstValueFrom } from 'rxjs';
 import { CategoriasService } from '../../../../services/categorias/categorias-service';
 import { SubcategoriasService } from '../../../../services/categorias/subcategorias-service';
 import { UnidadMedidaService } from '../../../../services/unidad-medida/unidad-medida-service';
 import { ProveedorService } from '../../../../services/proveedor/proveedor-service';
 import { MarcaService } from '../../../../services/marca/marca-service';
+import { ProductoService } from '../../../../services/producto/producto-service';
 
-export interface Producto{
-  nombre:string
-  clave:string
-  codigoBarra:string
-  precio:number
-  categoria:{
-    categoriaId:string
-    nombre:string
-  }
-  subcategoria:{
-    subcategoriaId:string
-    nombre:string
-  }
-  unidadMedida:{
-    unidadMedidaId:string
-    nombre:string
-  }
-  proveedor:{
-    proveedorId:string
-    nombre:string
-  }
-  marca:{
-    marcaId:string
-    nombre:string
-  }
-  activo: boolean;
-  createdAt: string;
-  updatedAt: string;
+export interface Producto {
+  id?: string;
+  nombre: string;
+  clave?: string;
+  codigoBarra?: string;
+  precio?: string | number;
+  tamano?: string | number;
+  categoria?: {
+    id?: string;
+    nombre?: string;
+  };
+  subCategoria?: {
+    id?: string;
+    nombre?: string;
+  };
+  unidadMedida?: {
+    id?: string;
+    nombre?: string;
+  };
+  proveedor?: {
+    id?: string;
+    nombre?: string;
+  };
+  marca?: {
+    id?: string;
+    nombre?: string;
+  };
+  activo?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 @Component({
@@ -57,7 +60,9 @@ export class Productos {
   private unidadMedidaService = inject(UnidadMedidaService)
   private proveedoresService = inject(ProveedorService)
   private marcaService = inject(MarcaService)
-  loading: boolean = false;
+  private productosService = inject(ProductoService)
+  private readonly confirmationService = inject(ConfirmationService);
+  loading = signal(true)
   abrirModal : boolean=false; 
   loadingTipos = signal(false);
   productos = signal<Producto[]>([])
@@ -71,12 +76,45 @@ editarProducto(producto: any) {
   console.log('Editar:', producto);
 }
 
-verProducto(producto: any) {
+verProducto(producto: any, event: Event) {
   console.log('Ver:', producto);
 }
 
-eliminarProducto(producto: any) {
-  console.log('Eliminar:', producto);
+eliminarProducto(producto: any, event: Event) {
+  this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: `¿Deseas eliminar la subcategoría "${producto.nombre}"?`,
+      header: 'Confirmar eliminación',
+      icon: 'pi pi-exclamation-triangle',
+      rejectLabel: 'Cancelar',
+      rejectButtonProps: { label: 'Cancelar', severity: 'secondary', outlined: true },
+      acceptButtonProps: { label: 'Eliminar', severity: 'danger' },
+      accept: async () => {
+        try {
+          const resp = await firstValueFrom(this.productosService.eliminarProducto(producto.id));
+          this.messageService.add({ severity: 'success', summary: 'Producto', detail: resp.message });
+          this.getSubcategorias();
+        } catch (err: any) {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: err?.error?.message || 'No se pudo elimina' });
+        }
+      },
+      reject: () => this.messageService.add({ severity: 'info', summary: 'Cancelado', detail: 'La eliminación fue cancelada' })
+    });
+}
+
+ngOnInit(): void {
+  this.obtenerProductos()
+}
+
+async obtenerProductos(){
+  try{
+    const resp = await firstValueFrom( this.productosService.obtenerProductos())
+    this.productos.set(Array.isArray(resp.data) ? resp.data : [])
+    console.log(resp)
+  } finally {
+    this.loading.set(false);
+  }
+
 }
 
 async onAgregar(){
@@ -162,20 +200,27 @@ async getMarcas(){
   }
 }
 
-cerrarNuevoProducto() {
+  cerrarNuevoProducto() {
     this.abrirModal = false;
   }
 
-   guardarProducto(producto: any) {
-
+  async guardarProducto(producto: any) {
+      const productoEnviar = {
+        ...producto,
+        precio: producto.precio?.toString(),
+        tamano: producto.tamano?.toString()
+      };
     console.log('Producto recibido:', producto);
 
-    this.abrirModal = false;
-
-     this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Producto agregado corecctamente'});
-
-    // Aquí después:
-    // this.productoService.crear(producto)
-
+    try{
+      const resp = await firstValueFrom(this.productosService.crearProducto(productoEnviar))
+      this.messageService.add({ severity: 'success', summary: 'Productos', detail: resp.message });
+      this.obtenerProductos()
+      this.abrirModal = false;
+    }catch(err:any){
+      this.messageService.add({ severity: 'error', summary: 'Productos', detail: 'Error al guardar los productos' });
+    }
   }
+
 }
+

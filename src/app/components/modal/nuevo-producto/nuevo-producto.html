@@ -18,7 +18,7 @@
 
         <div class="field field-full">
 
-          <label class="required"><i class="pi pi-align-left"></i>Descripcion</label>
+          <label class="required"><i class="pi pi-align-left"></i>Nombre del Producto</label>
 
           <input
             pInputText
@@ -67,7 +67,7 @@
           <label class="required"><i class="pi pi-tags"></i>Categoría</label>
             <p-select
               [options]="categorias"
-              [(ngModel)]="producto.categoria"
+              [(ngModel)]="producto.categoriaId"
               (ngModelChange)="actualizarSubcategorias()"
               optionLabel="nombre"
               optionValue="id"
@@ -85,14 +85,14 @@
 
           <p-select
             [options]="subcategoriasDisponibles"
-            [(ngModel)]="producto.subCategoria"
+            [(ngModel)]="producto.subCategoriaId"
             optionLabel="nombre"
             optionValue="id"
             placeholder="Selecciona una subcategoría"
             [filter]="true"
             filterBy="nombre"
             [showClear]="true"
-            [disabled]="!producto.categoria"
+            [disabled]="!producto.categoriaId"
             appendTo="body"
             class="w-full"
           />
@@ -103,7 +103,7 @@
 
           <p-select
             [options]="unidadesDeMedida"
-            [(ngModel)]="producto.unidadMedida"
+            [(ngModel)]="producto.unidadMedidaId"
             optionLabel="abreviatura"
             optionValue="id"
             placeholder="Selecciona una unidad"
@@ -120,8 +120,10 @@
 
         <input
             pInputText
-            [(ngModel)]="producto.cantidad"
+            [(ngModel)]="producto.tamano"
             placeholder="Tamaño del Producto"
+            min="0"
+            required
           />
         </div>
              <div class="field">
@@ -130,7 +132,7 @@
           <input
             pInputText
             type="number"
-            [(ngModel)]="producto.costo"
+            [(ngModel)]="producto.precio"
             placeholder="$0.00"
             min="0"
             step="0.01"
@@ -143,7 +145,7 @@
 
           <p-select
             [options]="proveedores"
-            [(ngModel)]="producto.proveedor"
+            [(ngModel)]="producto.proveedorId"
             optionLabel="nombre"
             optionValue="id"
             placeholder="Selecciona un proveedor"
@@ -162,7 +164,7 @@
 
           <p-select
             [options]="marcas"
-            [(ngModel)]="producto.marca"
+            [(ngModel)]="producto.marcaId"
             optionLabel="nombre"
             optionValue="id"
             placeholder="Selecciona una marca"

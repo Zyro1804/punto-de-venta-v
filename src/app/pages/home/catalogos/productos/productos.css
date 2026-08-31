@@ -60,7 +60,7 @@
 }
 
 :host ::ng-deep p-columnfilter input {
-  width: 100%;
+  width:100%;
   min-width: 0;
 }
 

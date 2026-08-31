@@ -7,6 +7,8 @@ import { Marcas } from './pages/home/catalogos/marcas/marcas';
 import { Categorias } from './pages/home/catalogos/categorias/categorias';
 import { Subcategoria } from './pages/home/catalogos/subcategoria/subcategoria';
 import { UnidadDeMedida } from './pages/home/catalogos/unidad-de-medida/unidad-de-medida';
+import { Usuarios } from './pages/home/usuarios/usuarios';
+import { Roles } from './pages/home/usuarios/roles/roles';
 
 export const routes: Routes = [
     {
@@ -20,7 +22,9 @@ export const routes: Routes = [
             { path: 'marcas', component : Marcas},
             { path: 'categorias', component : Categorias},
             { path:'subcategorias', component : Subcategoria},
-            { path:'unidades-de-medida', component : UnidadDeMedida}
+            { path:'unidades-de-medida', component : UnidadDeMedida},
+            { path: 'usuarios', component : Usuarios},
+            { path: 'roles', component : Roles}
         ]
     }
 ];

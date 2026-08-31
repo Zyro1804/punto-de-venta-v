@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { icon } from '@openng/optimus-ui-themes/aura/avatar';
 import { ButtonModule } from '@openng/optimus-ui/button';
 import { MenuModule } from '@openng/optimus-ui/menu';
 import { PanelMenuModule } from '@openng/optimus-ui/panelmenu';
@@ -11,6 +12,8 @@ import { PanelMenuModule } from '@openng/optimus-ui/panelmenu';
   templateUrl: './menu.html',
 })
 export class Menu {
+
+  private router = inject(Router);
 
    items = [
     {
@@ -123,7 +126,18 @@ export class Menu {
     {
       label: 'Usuarios',
       icon: 'pi pi-user',
-      routerLink: '/clientes'
+      items: [
+        {
+          label: 'Lista de Usuarios',
+          icon: 'pi pi-users',
+          routerLink: 'usuarios'
+        },
+        {
+          label: 'Roles',
+          icon: 'pi pi-shield',
+          routerLink: 'roles'
+        }
+      ]
     },
     {
       label: 'Configuración',
@@ -132,7 +146,17 @@ export class Menu {
     }
   ];
 
-  async logout(){
+  logoutItems = [
+    {
+      label: 'Cerrar sesión',
+      icon: 'pi pi-sign-out',
+      command: () => this.logout(),
+    }
+  ];
 
+  async logout(): Promise<void> {
+    localStorage.clear();
+    sessionStorage.clear();
+    await this.router.navigateByUrl('/login');
   }
 }

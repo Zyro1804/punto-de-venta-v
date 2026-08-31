@@ -1,0 +1,100 @@
+<div class="container">
+  <div class="header">
+    <div class="header-info">
+      <h1>Usuarios</h1>
+      <p>Administración de usuarios y accesos</p>
+    </div>
+    <p-button label="Agregar usuario" icon="pi pi-plus" size="large" (click)="onAgregar()"></p-button>
+  </div>
+
+  <div class="table-container">
+    <p-table
+      class="tabla"
+      #dt2
+      [value]="usuarios()"
+      dataKey="id"
+      size="small"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [loading]="loading()"
+      [paginator]="true"
+      [globalFilterFields]="['nombre', 'email', 'rol']"
+    >
+      <ng-template #caption>
+        <div class="table-header">
+            <span class="table-title"></span>
+          <p-iconfield iconPosition="left">
+            <p-inputicon>
+              <i class="pi pi-search"></i>
+            </p-inputicon>
+            <input
+              pInputText
+              type="text"
+              (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar usuario..."
+            />
+          </p-iconfield>
+        </div>
+      </ng-template>
+
+      <ng-template #header>
+        <tr>
+          <th>Num.</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th style="width: 120px">Acciones</th>
+        </tr>
+
+        <tr>
+          <th></th>
+          <th>
+            <p-columnFilter field="nombre" type="text" placeholder="Nombre" filterOn="input" ariaLabel="Filtrar nombre"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="email" type="text" placeholder="Correo" filterOn="input" ariaLabel="Filtrar correo"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="rol" type="text" placeholder="Rol" filterOn="input" ariaLabel="Filtrar rol"></p-columnFilter>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-usuario let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ rowIndex + 1 }}</td>
+          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.rol || 'Sin rol' }}</td>
+          <td>
+            <div class="actions">
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [text]="true"
+                [rounded]="true"
+                pTooltip="Eliminar"
+                (click)="eliminarUsuario(usuario, $event)"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="5" class="empty-message">No se encontraron usuarios.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+@if (abrirModal) {
+  <app-nuevo-usuario
+    [roles]="roles()"
+    (cerrar)="abrirModal = false"
+    (guardar)="crearUsuario($event)"
+  ></app-nuevo-usuario>
+}

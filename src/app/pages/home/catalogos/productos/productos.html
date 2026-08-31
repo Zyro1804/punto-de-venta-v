@@ -15,26 +15,22 @@
         size="small"
         [rows]="10"
         [rowsPerPageOptions]="[10, 25, 50]"
-        [loading]="loading"
+        [loading]="loading()"
         [paginator]="true"
         [globalFilterFields]="[
-          'id',
           'nombre',
-          'descripcion',
+          'clave',
           'codigoBarra',
-          'categoria',
-          'subCategoria',
-          'unidadMedida',
-          'proveedor'
+          'categoria.nombre',
+          'subCategoria.nombre',
+          'unidadMedida.nombre',
+          'proveedor.nombre',
+          'marca.nombre'
         ]"
       >
-        <!-- Buscador -->
         <ng-template #caption>
-    
           <div class="table-header">
-    
-            <span class="table-title">
-            </span>
+            <span class="table-title"></span>
             <p-iconfield iconPosition="left">
               <p-inputicon>
                 <i class="pi pi-search"></i>
@@ -49,114 +45,77 @@
           </div>
         </ng-template>
 
-        <!-- Encabezados -->
         <ng-template #header>
           <tr>
-            <th >Num.</th>
-            <th >Clave</th>
-            <th>Producto</th>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Clave</th>
             <th>Código de barras</th>
+            <th>Precio</th>
+            <th>Tamaño</th>
             <th>Categoría</th>
             <th>Subcategoría</th>
             <th>Unidad de medida</th>
             <th>Proveedor</th>
-            <th style="width: 140px">
-              Acciones
-            </th>
+            <th>Marca</th>
+            <th style="width: 140px">Acciones</th>
           </tr>
 
-          <!-- Filtros -->
           <tr>
             <th></th>
-            <th class="filter-id">
+            <th>
+              <p-columnFilter field="nombre" type="text" placeholder="Nombre" filterOn="input" ariaLabel="Filtrar nombre"></p-columnFilter>
             </th>
             <th>
-              <p-columnFilter
-                field="nombre"
-                type="text"
-                placeholder="Producto"
-                 filterOn="input"
-                ariaLabel="Filtrar producto">
-              </p-columnFilter>
+              <p-columnFilter field="clave" type="text" placeholder="Clave" filterOn="input" ariaLabel="Filtrar clave"></p-columnFilter>
             </th>
             <th>
-              <p-columnFilter
-                field="codigoBarra"
-                type="text"
-                placeholder="Código"
-                ariaLabel="Filtrar código">
-              </p-columnFilter>
+              <p-columnFilter field="codigoBarra" type="text" placeholder="Código" filterOn="input" ariaLabel="Filtrar código"></p-columnFilter>
             </th>
             <th>
-              <p-columnFilter
-                field="categoria"
-                type="text"
-                placeholder="Categoría"
-                ariaLabel="Filtrar categoría">
-              </p-columnFilter>
+              <p-columnFilter field="precio" type="text" placeholder="Precio" filterOn="input" ariaLabel="Filtrar precio"></p-columnFilter>
             </th>
             <th>
-              <p-columnFilter
-                field="subCategoria"
-                type="text"
-                placeholder="Subcategoría"
-                ariaLabel="Filtrar subcategoría">
-              </p-columnFilter>
+              <p-columnFilter field="tamano" type="text" placeholder="Tamaño" filterOn="input" ariaLabel="Filtrar tamaño"></p-columnFilter>
             </th>
             <th>
-              <p-columnFilter
-                field="unidadMedida"
-                type="text"
-                placeholder="Unidad"
-                ariaLabel="Filtrar unidad">
-              </p-columnFilter>
+              <p-columnFilter field="categoria.nombre" type="text" placeholder="Categoría" filterOn="input" ariaLabel="Filtrar categoría"></p-columnFilter>
             </th>
             <th>
-              <p-columnFilter
-                field="proveedor"
-                type="text"
-                placeholder="Proveedor"
-                ariaLabel="Filtrar proveedor">
-              </p-columnFilter>
+              <p-columnFilter field="subCategoria.nombre" type="text" placeholder="Subcategoría" filterOn="input" ariaLabel="Filtrar subcategoría"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter field="unidadMedida.nombre" type="text" placeholder="Unidad" filterOn="input" ariaLabel="Filtrar unidad"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter field="proveedor.nombre" type="text" placeholder="Proveedor" filterOn="input" ariaLabel="Filtrar proveedor"></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter field="marca.nombre" type="text" placeholder="Marca" filterOn="input" ariaLabel="Filtrar marca"></p-columnFilter>
             </th>
             <th></th>
           </tr>
         </ng-template>
-        <!-- Filas -->
-        <ng-template #body let-producto>
+
+        <ng-template #body let-producto let-rowIndex="rowIndex">
           <tr>
-            <td></td>
-            <td>
-              {{ producto.id }}
-            </td>
+            <td>{{ rowIndex + 1 }}</td>
             <td>
               <div class="product-info">
-                <strong>
-                  {{ producto.nombre }}
-                </strong>
-                <small>
-                  {{ producto.descripcion }}
-                </small>
+                <strong>{{ producto.nombre }}</strong>
               </div>
             </td>
-            <td>
-              {{ producto.codigoBarra }}
-            </td>
-            <td>
-              {{ producto.categoria }}
-            </td>
-            <td>
-              {{ producto.subCategoria }}
-            </td>
-            <td>
-              {{ producto.unidadMedida }}
-            </td>
-            <td>
-              {{ producto.proveedor }}
-            </td>
+            <td>{{ producto.clave }}</td>
+            <td>{{ producto.codigoBarra }}</td>
+            <td>{{ producto.precio }}</td>
+            <td>{{ producto.tamano }}</td>
+            <td>{{ producto.categoria?.nombre || '—' }}</td>
+            <td>{{ producto.subCategoria?.nombre || '—' }}</td>
+            <td>{{ producto.unidadMedida?.abreviatura|| '—' }}</td>
+            <td>{{ producto.proveedor?.nombre || '—' }}</td>
+            <td>{{ producto.marca?.nombre || '—' }}</td>
             <td>
               <div class="actions">
-                <!-- Editar -->
                 <p-button
                   icon="pi pi-pencil"
                   severity="info"
@@ -165,35 +124,23 @@
                   pTooltip="Editar"
                   (click)="editarProducto(producto)"
                 />
-    
-                <!-- Ver -->
-                <p-button
-                  icon="pi pi-eye"
-                  severity="secondary"
-                  [text]="true"
-                  [rounded]="true"
-                  pTooltip="Ver"
-                  (click)="verProducto(producto)"
-                />
-    
-                <!-- Eliminar -->
+
                 <p-button
                   icon="pi pi-trash"
                   severity="danger"
                   [text]="true"
                   [rounded]="true"
                   pTooltip="Eliminar"
-                  (click)="eliminarProducto(producto)"
+                  (click)="eliminarProducto(producto, $event)"
                 />
-    
               </div>
             </td>
           </tr>
         </ng-template>
-        <!-- Sin resultados -->
+
         <ng-template #emptymessage>
           <tr>
-            <td colspan="8" class="empty-message">
+            <td colspan="12" class="empty-message">
               No se encontraron productos.
             </td>
           </tr>

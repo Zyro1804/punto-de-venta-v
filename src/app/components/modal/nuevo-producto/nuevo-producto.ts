@@ -31,16 +31,15 @@ export class NuevoProducto {
 
   producto = {
     nombre: '',
-    descripcion: '',
     clave: '',
     codigoBarra: '',
-    categoria: '',
-    subCategoria: '',
-    unidadMedida: '',
-    cantidad:'',
-    costo: 0,
-    proveedor: '',
-    marca: ''
+    precio: 0,
+    tamano:0,
+    categoriaId: '',
+    subCategoriaId: '',
+    unidadMedidaId: '',
+    proveedorId: '',
+    marcaId: '',   
   };
 
   subcategoriasDisponibles: any[] = [];
@@ -50,22 +49,22 @@ export class NuevoProducto {
   }
 
   actualizarSubcategorias() {
-    const categoriaId = this.producto.categoria;
+    const categoriaId = this.producto.categoriaId;
     this.subcategoriasDisponibles = this.subcategorias.filter((subcategoria) =>
       subcategoria.categoriaId === categoriaId ||
       subcategoria.categoria?.id === categoriaId
     );
 
-    if (!this.subcategoriasDisponibles.some((subcategoria) => subcategoria.id === this.producto.subCategoria)) {
-      this.producto.subCategoria = '';
+    if (!this.subcategoriasDisponibles.some((subcategoria) => subcategoria.id === this.producto.subCategoriaId)) {
+      this.producto.subCategoriaId = '';
     }
   }
 
-    guardarProducto() {
+  guardarProducto() {
 
-    console.log(this.producto);
+  console.log(this.producto);
 
-    this.guardar.emit(this.producto);
+  this.guardar.emit(this.producto);
 
   }
 
