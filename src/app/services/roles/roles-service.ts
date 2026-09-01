@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { RolNuevo } from '../../pages/home/usuarios/roles/roles';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +14,8 @@ export class RolesService {
     return this.http.get<any>(`${this.rolesUrl}/obtener_todos_los_roles`);
   }
 
-  crearRol(payload: { nombre: string; descripcion?: string }) {
-    return this.http.post<any>(this.rolesUrl, payload);
+  crearRol(payload: RolNuevo ) {
+    return this.http.post<any>(`${this.rolesUrl}/crear`, payload);
   }
 
   eliminarRol(id: string | number) {

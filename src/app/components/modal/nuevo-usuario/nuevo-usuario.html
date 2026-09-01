@@ -14,20 +14,23 @@
       <div class="form-grid">
         <div class="field">
           <label class="required">Nombre</label>
-          <input pInputText [(ngModel)]="usuario.nombre" placeholder="Nombre completo" required />
+          <input pInputText [(ngModel)]="usuario.name" placeholder="Nombre completo" required />
         </div>
 
         <div class="field">
           <label class="required">Correo</label>
           <input pInputText [(ngModel)]="usuario.email" placeholder="correo@ejemplo.com" required />
         </div>
-
+        <div class="field">
+          <label class="required">Numero de Telefono</label>
+           <input pInputText [(ngModel)]="usuario.numero_telefono" placeholder="Nombre completo" required />
+        </div>
         <div class="field">
           <label class="required">Rol</label>
           <p-select
             [options]="roles"
-            [(ngModel)]="usuario.rolId"
-            optionLabel="nombre"
+            [(ngModel)]="usuario.roleId"
+            optionLabel="name"
             optionValue="id"
             placeholder="Selecciona un rol"
             appendTo="body"
@@ -47,6 +50,7 @@
             appendTo="body"
           />
         </div>
+        
       </div>
     </div>
   </div>

@@ -7,17 +7,17 @@ import { environment } from '../../../environments/environment';
 })
 export class UsuariosService {
   private readonly http = inject(HttpClient);
-  private readonly usuariosUrl = `${environment.url}/usuarios`;
+  private readonly usuariosUrl = `${environment.url}/user`;
 
   obtenerUsuarios() {
     return this.http.get<any>(this.usuariosUrl);
   }
 
   crearUsuario(payload: any) {
-    return this.http.post<any>(this.usuariosUrl, payload);
+    return this.http.post<any>(`${this.usuariosUrl}/crear_usuario`, payload);
   }
 
   eliminarUsuario(id: string | number) {
-    return this.http.delete<any>(`${this.usuariosUrl}/${id}`);
+    return this.http.delete<any>(`${this.usuariosUrl}/eliminar/${id}`);
   }
 }

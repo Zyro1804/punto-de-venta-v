@@ -9,6 +9,7 @@ import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { TableModule } from '@openng/optimus-ui/table';
 import { ConfirmDialogModule } from '@openng/optimus-ui/confirmdialog';
 import { RolesService } from '../../../../services/roles/roles-service';
+import { NuevoRol } from '../../../../components/modal/nuevo-rol/nuevo-rol';
 
 export interface Rol {
   id?: string | number;
@@ -18,9 +19,13 @@ export interface Rol {
   createdAt?: string;
   updatedAt?: string;
 }
+export interface RolNuevo {
+    name: string;
+  description?: string;
+}
 
 @Component({
-  imports: [ButtonModule, TableModule, InputIconModule, IconFieldModule, InputTextModule, FormsModule, ConfirmDialogModule],
+  imports: [ButtonModule, TableModule, InputIconModule, IconFieldModule, InputTextModule, FormsModule, ConfirmDialogModule, NuevoRol],
   selector: 'app-roles',
   styleUrl: './roles.css',
   templateUrl: './roles.html',
@@ -28,8 +33,7 @@ export interface Rol {
 export class Roles {
   roles = signal<Rol[]>([]);
   loading = signal(true);
-  nombre = '';
-  descripcion = '';
+  abrirModal=false;
 
   private readonly rolesService = inject(RolesService);
   private readonly messageService = inject(MessageService);
@@ -55,8 +59,15 @@ export class Roles {
     }
   }
 
-  async guardarRol() {
-    if (!this.nombre.trim()) {
+  
+  onAgregar() {
+    this.abrirModal = true;
+  }
+
+
+  async crearRol(payload:RolNuevo){
+    console.log(payload)
+   if (!payload.name.trim()) {
       this.messageService.add({
         severity: 'error',
         summary: 'Nombre requerido',
@@ -65,29 +76,13 @@ export class Roles {
       return;
     }
 
-    try {
-      const resp = await firstValueFrom(
-        this.rolesService.crearRol({
-          nombre: this.nombre.trim(),
-          descripcion: this.descripcion.trim(),
-        })
-      );
-
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Rol',
-        detail: resp.message || 'Rol agregado correctamente',
-      });
-
-      this.nombre = '';
-      this.descripcion = '';
-      this.getRoles();
-    } catch (err: any) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Rol',
-        detail: err?.error?.message || 'No se pudo guardar el rol',
-      });
+    try{
+      const resp = await firstValueFrom(this.rolesService.crearRol(payload))
+      this.messageService.add({ severity: 'success', summary: 'Roles', detail: resp.message || 'Rol creado correctamente' });
+      this.abrirModal = false;
+      this.getRoles()
+    }catch(err:any){
+       this.messageService.add({ severity: 'error',summary: 'Rol',detail: err?.error?.message || 'No se pudo guardar el rol',});
     }
   }
 

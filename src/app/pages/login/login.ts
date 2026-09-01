@@ -10,6 +10,7 @@ import { firstValueFrom } from 'rxjs';
 import { Toast } from '@openng/optimus-ui/toast';
 import { MessageService } from '@openng/optimus-ui/api';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth/auth-service';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class Login {
   private loginService = inject(LoginService)
   private messageService = inject(MessageService)
   private route = inject(Router)
+  private authService = inject(AuthService)
   username!:string
   password!:string
   loading = signal(false);
@@ -40,9 +42,14 @@ export class Login {
     try{
       this.invalidSesion= false;
       const resp =  await firstValueFrom(this.loginService.logInPost(payload));
+
+      if (resp?.access_token) {
+        this.authService.saveToken(resp.access_token);
+      }
+
       this.loading.set(false);
       this.messageService.add({ severity: 'success', summary: 'Autenticacion', detail: resp.message});
-      setTimeout(()=>{this.route.navigateByUrl('/home')  },2000)
+      setTimeout(()=>{this.route.navigateByUrl('/home')  },1000)
       
     }catch(err:any){
       console.log(err)

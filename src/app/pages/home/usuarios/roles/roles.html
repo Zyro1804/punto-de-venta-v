@@ -4,7 +4,7 @@
       <h1>Roles</h1>
       <p>Administración de permisos por rol</p>
     </div>
-    <p-button label="Agregar roles" icon="pi pi-plus" size="large" ></p-button>
+    <p-button label="Agregar roles" icon="pi pi-plus" size="large" (click)="onAgregar()"></p-button>
 </div>
   <div class="table-container">
     <p-table
@@ -63,14 +63,14 @@
           <td>{{ rol.description || 'Sin descripción' }}</td>
           <td>
             <div class="actions">
-              <p-button
+              <!-- <p-button
                 icon="pi pi-trash"
                 severity="danger"
                 [text]="true"
                 [rounded]="true"
                 pTooltip="Eliminar"
                 (click)="eliminarRol(rol, $event)"
-              />
+              /> -->
             </div>
           </td>
         </tr>
@@ -85,3 +85,9 @@
   </div>
 </div>
 
+@if (abrirModal) {
+  <app-nuevo-rol
+    (cerrar)="abrirModal = false"
+    (guardar)="crearRol($event)"
+  ></app-nuevo-rol>
+}

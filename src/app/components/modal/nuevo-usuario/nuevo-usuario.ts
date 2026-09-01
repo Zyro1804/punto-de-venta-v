@@ -7,6 +7,7 @@ import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { PasswordModule } from '@openng/optimus-ui/password';
 import { SelectModule } from '@openng/optimus-ui/select';
 import { inject } from '@angular/core';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   imports: [ButtonModule, DialogModule, FormsModule, InputTextModule, PasswordModule, SelectModule],
@@ -22,15 +23,15 @@ export class NuevoUsuario {
   @Output() guardar = new EventEmitter<any>();
 
   usuario = {
-    nombre: '',
+    name: '',
     email: '',
-    rolId: null as string | number | null,
-    rol: '',
+    roleId: '',
     password: '',
+    numero_telefono:''
   };
 
   guardarUsuario() {
-    if (!this.usuario.nombre.trim() || !this.usuario.email.trim() || !this.usuario.password.trim()) {
+    if (!this.usuario.name.trim() || !this.usuario.email.trim() || !this.usuario.password.trim()) {
       this.messageService.add({
         severity: 'error',
         summary: 'Campos incompletos',
@@ -39,7 +40,7 @@ export class NuevoUsuario {
       return;
     }
 
-    if (!this.usuario.rolId) {
+    if (!this.usuario.roleId) {
       this.messageService.add({
         severity: 'error',
         summary: 'Rol requerido',
@@ -67,14 +68,9 @@ export class NuevoUsuario {
       return;
     }
 
-    const rolSeleccionado = this.roles.find((rol) => rol.id === this.usuario.rolId);
+    const rolSeleccionado = this.roles.find((rol) => rol.id === this.usuario.roleId);
 
-    this.guardar.emit({
-      ...this.usuario,
-      rol: rolSeleccionado?.nombre ?? rolSeleccionado?.label ?? this.usuario.rol,
-      roleId: this.usuario.rolId,
-      rolId: this.usuario.rolId,
-    });
+    this.guardar.emit(this.usuario);
   }
 
   cerrarDialog() {

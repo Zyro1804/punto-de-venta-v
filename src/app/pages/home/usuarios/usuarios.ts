@@ -13,11 +13,11 @@ import { RolesService } from '../../../services/roles/roles-service';
 
 export interface Usuario {
   id?: string;
-  nombre: string;
+  name: string;
   email: string;
   rol: string;
   password?: string;
-  activo?: boolean;
+  isActive?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -40,6 +40,7 @@ export class Usuarios {
   usuarios = signal<Usuario[]>([]);
   roles = signal<any[]>([]);
   loading = signal(true);
+  loadingAgregar = signal(false)
   abrirModal = false;
 
   private readonly usuariosService = inject(UsuariosService);
@@ -48,27 +49,31 @@ export class Usuarios {
   private readonly confirmationService = inject(ConfirmationService);
 
   ngOnInit(): void {
-    this.getRoles();
+    // this.getRoles();
     this.getUsuarios();
   }
 
   async getRoles() {
     try {
       const resp = await firstValueFrom(this.rolesService.obtenerRoles());
-      this.roles.set(resp.data ?? resp);
+      this.roles.set(resp.data);
+      console.log(resp)
+      return true
     } catch (err: any) {
       this.messageService.add({
         severity: 'warn',
         summary: 'Roles',
         detail: err?.error?.message || 'No se pudieron cargar los roles',
       });
+       this.loadingAgregar.set(false)
+      return false
     }
   }
 
   async getUsuarios() {
     try {
       const resp = await firstValueFrom(this.usuariosService.obtenerUsuarios());
-      this.usuarios.set(resp.data ?? resp);
+      this.usuarios.set(resp.data );
       this.loading.set(false);
     } catch (err: any) {
       this.loading.set(false);
@@ -80,21 +85,19 @@ export class Usuarios {
     }
   }
 
-  onAgregar() {
+  async onAgregar() {
+    this.loadingAgregar.set(true)
+    const rolesObtenidos = await this.getRoles()
+    if(!rolesObtenidos){
+      this.messageService.add({ severity: 'error', summary: 'Usuario', detail:  'Error al crear Usuario modulo: Roles' });
+      return
+    }
+     this.loadingAgregar.set(false)
     this.abrirModal = true;
   }
 
-  async crearUsuario(event: any) {
+  async crearUsuario(payload: any) {
     try {
-      const payload = {
-        nombre: event.nombre,
-        email: event.email,
-        rol: event.rol,
-        roleId: event.roleId ?? event.rolId,
-        rolId: event.rolId ?? event.roleId,
-        password: event.password,
-      };
-
       const resp = await firstValueFrom(this.usuariosService.crearUsuario(payload));
       this.messageService.add({ severity: 'success', summary: 'Usuario', detail: resp.message || 'Usuario guardado correctamente' });
       this.abrirModal = false;
@@ -111,7 +114,7 @@ export class Usuarios {
   async eliminarUsuario(usuario: Usuario, event: Event) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: `¿Deseas eliminar al usuario "${usuario.nombre}"?`,
+      message: `¿Deseas eliminar al usuario "${usuario.name}"?`,
       header: 'Confirmar eliminación',
       icon: 'pi pi-exclamation-triangle',
       rejectLabel: 'Cancelar',

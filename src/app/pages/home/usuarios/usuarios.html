@@ -4,7 +4,7 @@
       <h1>Usuarios</h1>
       <p>Administración de usuarios y accesos</p>
     </div>
-    <p-button label="Agregar usuario" icon="pi pi-plus" size="large" (click)="onAgregar()"></p-button>
+    <p-button label="Agregar usuario" icon="pi pi-plus"  [loading]="loadingAgregar()" size="large" (click)="onAgregar()"></p-button>
   </div>
 
   <div class="table-container">
@@ -42,6 +42,7 @@
           <th>Num.</th>
           <th>Nombre</th>
           <th>Correo</th>
+           <th>Num Telefono</th>
           <th>Rol</th>
           <th style="width: 120px">Acciones</th>
         </tr>
@@ -49,10 +50,13 @@
         <tr>
           <th></th>
           <th>
-            <p-columnFilter field="nombre" type="text" placeholder="Nombre" filterOn="input" ariaLabel="Filtrar nombre"></p-columnFilter>
+            <p-columnFilter field="name" type="text" placeholder="Nombre" filterOn="input" ariaLabel="Filtrar nombre"></p-columnFilter>
           </th>
           <th>
             <p-columnFilter field="email" type="text" placeholder="Correo" filterOn="input" ariaLabel="Filtrar correo"></p-columnFilter>
+          </th>
+           <th>
+            <p-columnFilter field="numero_telefono" type="text" placeholder="Correo" filterOn="input" ariaLabel="Filtrar correo"></p-columnFilter>
           </th>
           <th>
             <p-columnFilter field="rol" type="text" placeholder="Rol" filterOn="input" ariaLabel="Filtrar rol"></p-columnFilter>
@@ -64,9 +68,10 @@
       <ng-template #body let-usuario let-rowIndex="rowIndex">
         <tr>
           <td>{{ rowIndex + 1 }}</td>
-          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.name }}</td>
           <td>{{ usuario.email }}</td>
-          <td>{{ usuario.rol || 'Sin rol' }}</td>
+          <td>{{ usuario.numero_telefono }}</td>
+          <td>{{ usuario.role.name || 'Sin rol' }}</td>
           <td>
             <div class="actions">
               <p-button
@@ -77,6 +82,7 @@
                 pTooltip="Eliminar"
                 (click)="eliminarUsuario(usuario, $event)"
               />
+              
             </div>
           </td>
         </tr>
