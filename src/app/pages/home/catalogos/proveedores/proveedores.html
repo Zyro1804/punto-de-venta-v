@@ -140,7 +140,7 @@
                   [text]="true"
                   [rounded]="true"
                   pTooltip="Editar"
-                  (click)="editarProducto(proveedor)"
+                  (click)="editarProveedor(proveedor)"
                 />
     
                 <!-- Ver -->
@@ -181,7 +181,9 @@
 
 @if (abrirModal) {
     <app-nuevo-proveedor
-    (cerrar)="abrirModal=false"
+    [proveedorInicial]="proveedorEnEdicion"
+    [modoEdicion]="!!proveedorEnEdicion"
+    (cerrar)="abrirModal=false; proveedorEnEdicion=null"
     (guardar)="crearProveedor($event)"
     ></app-nuevo-proveedor>
 }

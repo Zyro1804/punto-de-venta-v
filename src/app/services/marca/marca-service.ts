@@ -17,6 +17,10 @@ export class MarcaService {
         return this.http.post<any>(`${this.marcaUrl}/crear`,payload)
     }
 
+    actualizarMarca(id:string, payload:any){
+        return this.http.put<any>(`${this.marcaUrl}/actualizar/${id}`,payload)
+    }
+
     eliminarMarca(id:string){
         return this.http.delete<any>(`${this.marcaUrl}/eliminar/${id}`)
     }

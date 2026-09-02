@@ -49,3 +49,47 @@
   content: ' *';
   color: var(--p-red-500);
 }
+
+.image-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  padding: 10px;
+  border: 1px solid var(--p-surface-300);
+  border-radius: 6px;
+}
+
+.image-preview img {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.image-preview-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.image-preview-info span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 575px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .image-preview-info {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from '@openng/optimus-ui/api';
 import { ButtonModule } from '@openng/optimus-ui/button';
@@ -13,6 +13,8 @@ import { InputTextModule } from '@openng/optimus-ui/inputtext';
 })
 export class NuevoProveedor {
   private messageService = inject(MessageService)
+  @Input() proveedorInicial: any | null = null;
+  @Input() modoEdicion = false;
   @Output() cerrar = new EventEmitter<void>();
   @Output() guardar = new EventEmitter<any>();
 
@@ -23,6 +25,18 @@ export class NuevoProveedor {
       email: '', 
       direccion: '',
     };
+
+  ngOnInit() {
+    if (this.proveedorInicial) {
+      this.proveedor = {
+        nombre: this.proveedorInicial.nombre ?? '',
+        contacto: this.proveedorInicial.contacto ?? '',
+        telefono: this.proveedorInicial.telefono ?? '',
+        email: this.proveedorInicial.email ?? '',
+        direccion: this.proveedorInicial.direccion ?? '',
+      };
+    }
+  }
 
   guardarProducto() {
 
@@ -36,7 +50,7 @@ export class NuevoProveedor {
          this.messageService.add({ severity: 'error', summary: 'Campo Numero de Telefono', detail: 'Rellenar el telefono con datos correctos'});
         return;
       }
-    this.guardar.emit(this.proveedor);
+    this.guardar.emit({ ...this.proveedor, id: this.proveedorInicial?.id });
   }
 
   cerrarDialog() {

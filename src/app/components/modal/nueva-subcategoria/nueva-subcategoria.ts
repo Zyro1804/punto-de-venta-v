@@ -13,6 +13,8 @@ import { SelectModule } from '@openng/optimus-ui/select';
 })
 export class NuevaSubcategoria {
   @Input() categorias:any='';
+  @Input() subcategoriaInicial: any | null = null;
+  @Input() modoEdicion = false;
   @Output() cerrar = new EventEmitter<void>();
   @Output() guardar = new EventEmitter<{ nombre: string; descripcion: string }>();
 
@@ -20,9 +22,16 @@ export class NuevaSubcategoria {
 
    ngOnInit(): void {
     console.log(this.categorias)
+    if (this.subcategoriaInicial) {
+      this.subcategoria = {
+        nombre: this.subcategoriaInicial.nombre ?? '',
+        descripcion: this.subcategoriaInicial.descripcion ?? '',
+        categoriaId: this.subcategoriaInicial.categoriaId ?? this.subcategoriaInicial.categoria?.id ?? null
+      };
+    }
   }
   guardarSubcategoria() {
-    this.guardar.emit(this.subcategoria);
+    this.guardar.emit({ ...this.subcategoria, id: this.subcategoriaInicial?.id } as any);
   }
 
   cerrarDialog() {

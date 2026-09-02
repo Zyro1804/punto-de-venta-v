@@ -28,6 +28,7 @@ export class Marcas {
   marca = signal<Marca[]>([]);
   loading = signal(true);
   abrirModal : boolean = false
+  marcaEnEdicion: Marca | null = null;
 
   private readonly marcasService= inject(MarcaService)
   private readonly messageService = inject(MessageService)
@@ -49,10 +50,14 @@ export class Marcas {
   }
 
   onAgregar(){
+    this.marcaEnEdicion = null;
     this.abrirModal=true
   }
 
-  editarMarca(producto: any) {}
+  editarMarca(marca: Marca) {
+    this.marcaEnEdicion = marca;
+    this.abrirModal = true;
+  }
 
   verMarca(producto: any) {}
 
@@ -106,13 +111,20 @@ export class Marcas {
   async crearMarca(event:any){
     console.log(event)
     try{
-      const resp = await firstValueFrom(this.marcasService.crearMarca(event))
-       this.messageService.add({ severity: 'success', summary: 'Marca', detail: resp.message});
+      const resp = event.id
+        ? await firstValueFrom(this.marcasService.actualizarMarca(event.id, event))
+        : await firstValueFrom(this.marcasService.crearMarca(event));
+       this.messageService.add({
+         severity: 'success',
+         summary: event.id ? 'Marca actualizada' : 'Marca agregada',
+         detail: resp.message
+       });
       console.log(resp)
       this.getMarcas();
-      this.abrirModal=false
+      this.abrirModal = false;
+      this.marcaEnEdicion = null;
     }catch(err:any){
-
+       this.messageService.add({ severity: 'warn', summary: 'Marcas', detail: err.error.message});
     }
   }
 }

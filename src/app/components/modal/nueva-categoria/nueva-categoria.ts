@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from '@openng/optimus-ui/api';
 import { ButtonModule } from '@openng/optimus-ui/button';
@@ -14,6 +14,8 @@ import { InputTextModule } from '@openng/optimus-ui/inputtext';
 export class NuevaCategoria {
 
   private messageService = inject(MessageService)
+  @Input() categoriaInicial: any | null = null;
+  @Input() modoEdicion = false;
   @Output() cerrar = new EventEmitter<void>();
   @Output() guardar = new EventEmitter<any>();
 
@@ -22,9 +24,18 @@ export class NuevaCategoria {
     descripcion:''
   }
 
+  ngOnInit() {
+    if (this.categoriaInicial) {
+      this.categoria = {
+        nombre: this.categoriaInicial.nombre ?? '',
+        descripcion: this.categoriaInicial.descripcion ?? ''
+      };
+    }
+  }
+
 
   guardarCategoria() {
-  this.guardar.emit(this.categoria);
+  this.guardar.emit({ ...this.categoria, id: this.categoriaInicial?.id });
   }
 
   cerrarDialog() {

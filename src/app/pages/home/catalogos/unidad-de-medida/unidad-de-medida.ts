@@ -29,6 +29,7 @@ export class UnidadDeMedida {
   unidades = signal<UnidadDeMedida[]>([]);
   loading = signal(true);
   abrirModal = false;
+  unidadEnEdicion: UnidadDeMedida | null = null;
 
   private readonly unidadMedidaService = inject(UnidadMedidaService);
   private readonly messageService = inject(MessageService);
@@ -50,10 +51,14 @@ export class UnidadDeMedida {
   }
 
   onAgregar() {
+    this.unidadEnEdicion = null;
     this.abrirModal = true;
   }
 
-  editarUnidad(unidad: UnidadDeMedida) {}
+  editarUnidad(unidad: UnidadDeMedida) {
+    this.unidadEnEdicion = unidad;
+    this.abrirModal = true;
+  }
 
   async eliminarUnidad(unidad: UnidadDeMedida, event: Event) {
     this.confirmationService.confirm({
@@ -84,11 +89,14 @@ export class UnidadDeMedida {
     });
   }
 
-  async crearUnidad(event: { nombre: string; abreviatura: string }) {
+  async crearUnidad(event: { id?: string; nombre: string; abreviatura: string }) {
     try {
-      const resp = await firstValueFrom(this.unidadMedidaService.crearUnidadDeMedida(event));
+      const resp = event.id
+        ? await firstValueFrom(this.unidadMedidaService.actualizarUnidadDeMedida(event.id, event))
+        : await firstValueFrom(this.unidadMedidaService.crearUnidadDeMedida(event));
       this.messageService.add({ severity: 'success', summary: 'Unidad de medida', detail: resp.message });
       this.abrirModal = false;
+      this.unidadEnEdicion = null;
       await this.getUnidades();
     } catch (err: any) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: err?.error?.message || 'No se pudo guardar la unidad de medida' });

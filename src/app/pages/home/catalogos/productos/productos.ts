@@ -13,10 +13,12 @@ import { UnidadMedidaService } from '../../../../services/unidad-medida/unidad-m
 import { ProveedorService } from '../../../../services/proveedor/proveedor-service';
 import { MarcaService } from '../../../../services/marca/marca-service';
 import { ProductoService } from '../../../../services/producto/producto-service';
+import { environment } from '../../../../../environments/environment';
 
 export interface Producto {
   id?: string;
   nombre: string;
+  imagen?: string;
   clave?: string;
   codigoBarra?: string;
   precio?: string | number;
@@ -71,9 +73,31 @@ export class Productos {
   unidadesDeMedida:any;
   proveedores:any;
   marcas:any;
+  productoEnEdicion: Producto | null = null;
 
-editarProducto(producto: any) {
-  console.log('Editar:', producto);
+  obtenerUrlImagen(imagen?: string): string {
+    if (!imagen) {
+      return '';
+    }
+
+    return imagen.startsWith('http') ? imagen : `${environment.url}${imagen}`;
+  }
+
+async editarProducto(producto: Producto) {
+  this.loadingTipos.set(true);
+  const catalogosOk = await Promise.all([
+    this.getCategorias(),
+    this.getSubcategorias(),
+    this.getUnidadDeMedida(),
+    this.getProveedor(),
+    this.getMarcas(),
+  ]);
+
+  if (catalogosOk.every(Boolean)) {
+    this.productoEnEdicion = producto;
+    this.abrirModal = true;
+  }
+  this.loadingTipos.set(false);
 }
 
 verProducto(producto: any, event: Event) {
@@ -202,21 +226,31 @@ async getMarcas(){
 
   cerrarNuevoProducto() {
     this.abrirModal = false;
+    this.productoEnEdicion = null;
   }
 
   async guardarProducto(producto: any) {
-      const productoEnviar = {
-        ...producto,
-        precio: producto.precio?.toString(),
-        tamano: producto.tamano?.toString()
-      };
     console.log('Producto recibido:', producto);
 
+    const productoEnviar = new FormData();
+    Object.entries(producto).forEach(([campo, valor]) => {
+      if (campo !== 'imagen' && valor !== undefined && valor !== null && valor !== '') {
+        productoEnviar.append(campo, String(valor));
+      }
+    });
+
+    if (producto.imagen) {
+      productoEnviar.append('imagen', producto.imagen);
+    }
+
     try{
-      const resp = await firstValueFrom(this.productosService.crearProducto(productoEnviar))
+      const resp = producto.id
+        ? await firstValueFrom(this.productosService.actualizarProducto(producto.id, productoEnviar))
+        : await firstValueFrom(this.productosService.crearProducto(productoEnviar));
       this.messageService.add({ severity: 'success', summary: 'Productos', detail: resp.message });
       this.obtenerProductos()
       this.abrirModal = false;
+      this.productoEnEdicion = null;
     }catch(err:any){
       this.messageService.add({ severity: 'error', summary: 'Productos', detail: 'Error al guardar los productos' });
     }

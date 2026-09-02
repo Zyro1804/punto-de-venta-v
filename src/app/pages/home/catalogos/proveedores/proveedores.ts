@@ -38,6 +38,7 @@ export class Proveedores implements OnInit{
    loading = signal(true);
    abrirModal :boolean=false
    proveedoresCargados : boolean=false;
+  proveedorEnEdicion: Proveedor | null = null;
 
 
   ngOnInit(): void {
@@ -55,12 +56,14 @@ export class Proveedores implements OnInit{
     }
   }
   onAgregar(){
+    this.proveedorEnEdicion = null;
     this.abrirModal=true
   }
 
-  editarProducto(producto: any) {
-  console.log('Editar:', producto);
-}
+  editarProveedor(proveedor: Proveedor) {
+    this.proveedorEnEdicion = proveedor;
+    this.abrirModal = true;
+  }
 
   verProducto(producto: any) {
     console.log('Ver:', producto);
@@ -118,9 +121,17 @@ export class Proveedores implements OnInit{
   async crearProveedor(event:any){
     console.log(event,'Aqui en padre')
     try{
-      const resp= await firstValueFrom(this.proveedorService.postCrearProveedor(event))
-      this.messageService.add({ severity: 'success', summary: 'Proveedor agregado', detail: resp.message});
-      this.getProveedores()
+      const resp = event.id
+        ? await firstValueFrom(this.proveedorService.actualizarProveedor(event.id, event))
+        : await firstValueFrom(this.proveedorService.postCrearProveedor(event));
+      this.messageService.add({
+        severity: 'success',
+        summary: event.id ? 'Proveedor actualizado' : 'Proveedor agregado',
+        detail: resp.message
+      });
+      this.abrirModal = false;
+      this.proveedorEnEdicion = null;
+      this.getProveedores();
     }catch(err:any){
       console.log(err)
        this.messageService.add({ severity: 'warn', summary: 'Problemas al agregar', detail: err.error.message});

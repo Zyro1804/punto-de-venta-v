@@ -10,6 +10,7 @@ import { firstValueFrom } from 'rxjs';
 import { Toast } from '@openng/optimus-ui/toast';
 import { MessageService } from '@openng/optimus-ui/api';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth/auth-service';
 
 
@@ -24,11 +25,31 @@ export class Login {
   private loginService = inject(LoginService)
   private messageService = inject(MessageService)
   private route = inject(Router)
+  private activatedRoute = inject(ActivatedRoute)
   private authService = inject(AuthService)
   username!:string
   password!:string
   loading = signal(false);
   invalidSesion: boolean = false;
+
+  ngOnInit(): void {
+    this.activatedRoute.queryParamMap.subscribe(queryParams => {
+      if (queryParams.get('sessionExpired') !== 'true') return;
+
+      void this.route.navigate([], {
+        queryParams: { sessionExpired: null },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      }).then(() => {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Sesión expirada',
+          detail: 'Vuelve a iniciar sesión para continuar.',
+          life: 5000,
+        });
+      });
+    });
+  }
  
 
 
@@ -44,12 +65,14 @@ export class Login {
       const resp =  await firstValueFrom(this.loginService.logInPost(payload));
 
       if (resp?.access_token) {
+        console.log('Token recibido:', resp.access_token);
+        console.log('Datos del token:', this.authService.decodeToken(resp.access_token));
         this.authService.saveToken(resp.access_token);
       }
 
-      this.loading.set(false);
+      
       this.messageService.add({ severity: 'success', summary: 'Autenticacion', detail: resp.message});
-      setTimeout(()=>{this.route.navigateByUrl('/home')  },1000)
+      setTimeout(()=>{this.loading.set(false);this.route.navigateByUrl('/home')  },1000)
       
     }catch(err:any){
       console.log(err)

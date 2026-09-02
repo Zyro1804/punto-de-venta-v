@@ -16,6 +16,10 @@ export class SubcategoriasService {
 		return this.http.post<any>(`${this.subcategoriaUrl}/crear`, payload);
 	}
 
+	actualizarSubcategoria(id: string, payload: any){
+		return this.http.put<any>(`${this.subcategoriaUrl}/actualizar/${id}`, payload);
+	}
+
 	eliminarSubcategoria(id: string){
 		return this.http.delete<any>(`${this.subcategoriaUrl}/eliminar/${id}`);
 	}

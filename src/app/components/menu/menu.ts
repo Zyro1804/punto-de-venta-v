@@ -4,6 +4,7 @@ import { icon } from '@openng/optimus-ui-themes/aura/avatar';
 import { ButtonModule } from '@openng/optimus-ui/button';
 import { MenuModule } from '@openng/optimus-ui/menu';
 import { PanelMenuModule } from '@openng/optimus-ui/panelmenu';
+import { AuthService } from '../../services/auth/auth-service';
 
 @Component({
   imports: [ PanelMenuModule, MenuModule, ButtonModule],
@@ -12,8 +13,13 @@ import { PanelMenuModule } from '@openng/optimus-ui/panelmenu';
   templateUrl: './menu.html',
 })
 export class Menu {
-
   private router = inject(Router);
+  private authService = inject(AuthService)
+  usuario:any;
+  // ngOnInit(): void {
+  //  this.obtenerDatosUsuario()
+  // }
+
 
    items = [
     {

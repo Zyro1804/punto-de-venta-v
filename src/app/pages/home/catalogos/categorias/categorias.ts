@@ -28,6 +28,7 @@ export class Categorias {
   categorias = signal<Categoria[]>([])
   loading = signal(true);
   abrirModal : boolean = false;
+  categoriaEnEdicion: Categoria | null = null;
 
   private readonly categoriasService= inject(CategoriasService)
   private readonly messageService = inject(MessageService)
@@ -49,10 +50,14 @@ export class Categorias {
     }
 
    onAgregar(){
+    this.categoriaEnEdicion = null;
     this.abrirModal=true
   }
 
-  editarCategoria(producto: any) {}
+  editarCategoria(categoria: Categoria) {
+    this.categoriaEnEdicion = categoria;
+    this.abrirModal = true;
+  }
 
   verMarca(producto: any) {}
 
@@ -106,11 +111,18 @@ export class Categorias {
   async crearCategoria(event:any){
     console.log(event)
     try{
-      const resp = await firstValueFrom(this.categoriasService.crearCategoria(event))
-       this.messageService.add({ severity: 'success', summary: 'Categoria', detail: resp.message});
+      const resp = event.id
+        ? await firstValueFrom(this.categoriasService.actualizarCategoria(event.id, event))
+        : await firstValueFrom(this.categoriasService.crearCategoria(event));
+       this.messageService.add({
+         severity: 'success',
+         summary: event.id ? 'Categoria actualizada' : 'Categoria agregada',
+         detail: resp.message
+       });
       console.log(resp)
       this.getCategorias();
-      this.abrirModal=false
+      this.abrirModal = false;
+      this.categoriaEnEdicion = null;
     }catch(err:any){
        this.messageService.add({ severity: 'error', summary: 'Categoria', detail: 'Error al guardar Categoria'});
 

@@ -1,5 +1,5 @@
 <p-dialog
-  header="Agregar Nuevo Producto"
+  [header]="modoEdicion ? 'Editar Producto' : 'Agregar Nuevo Producto'"
   [modal]="true"
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
   [visible]="true"
@@ -27,6 +27,32 @@
             required
           />
 
+        </div>
+
+        <div class="field field-full">
+          <label><i class="pi pi-image"></i>Imagen del producto</label>
+          <input
+            #imagenInput
+            type="file"
+            accept="image/*"
+            (change)="seleccionarImagen($event)"
+          />
+          @if (vistaPreviaImagen) {
+            <div class="image-preview">
+              <img [src]="vistaPreviaImagen" alt="Vista previa del producto" />
+              <div class="image-preview-info">
+                <span>{{ imagen?.name || 'Imagen actual' }}</span>
+                <p-button
+                  type="button"
+                  label="Quitar imagen"
+                  icon="pi pi-times"
+                  severity="secondary"
+                  [text]="true"
+                  (click)="quitarImagen(imagenInput)"
+                />
+              </div>
+            </div>
+          }
         </div>
 
         <div class="field">
@@ -185,7 +211,7 @@
 
   <ng-template #footer>
     <p-button
-      label="Guardar producto"
+      [label]="modoEdicion ? 'Actualizar producto' : 'Guardar producto'"
       icon="pi pi-check"
       (click)="guardarProducto()"
     />

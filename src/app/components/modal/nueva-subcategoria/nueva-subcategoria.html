@@ -1,4 +1,4 @@
-<p-dialog header="Agregar nueva subcategoría" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+<p-dialog [header]="modoEdicion ? 'Editar subcategoría' : 'Agregar nueva subcategoría'" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
 	[visible]="true" [style]="{ width: '50rem' }" [draggable]="false" (onHide)="cerrarDialog()">
 	<div class="form-subcategoria">
 		<div class="section">
@@ -34,6 +34,6 @@
 		</div>
 	</div>
 	<ng-template #footer>
-		<p-button label="Guardar subcategoría" icon="pi pi-check" (click)="guardarSubcategoria()"></p-button>
+		<p-button [label]="modoEdicion ? 'Actualizar subcategoría' : 'Guardar subcategoría'" icon="pi pi-check" (click)="guardarSubcategoria()"></p-button>
 	</ng-template>
 </p-dialog>

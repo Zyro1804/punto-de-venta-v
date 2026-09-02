@@ -143,7 +143,9 @@
 
 @if (abrirModal) {
     <app-nueva-categoria
-    (cerrar)="abrirModal=false"
+    [categoriaInicial]="categoriaEnEdicion"
+    [modoEdicion]="!!categoriaEnEdicion"
+    (cerrar)="abrirModal=false; categoriaEnEdicion=null"
     (guardar)="crearCategoria($event)"
     ></app-nueva-categoria>
 }

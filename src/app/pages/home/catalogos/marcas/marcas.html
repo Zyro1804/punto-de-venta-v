@@ -140,7 +140,9 @@
 
 @if (abrirModal) {
     <app-nueva-marca
-    (cerrar)="abrirModal=false"
+    [marcaInicial]="marcaEnEdicion"
+    [modoEdicion]="!!marcaEnEdicion"
+    (cerrar)="abrirModal=false; marcaEnEdicion=null"
     (guardar)="crearMarca($event)"
     ></app-nueva-marca>
 }

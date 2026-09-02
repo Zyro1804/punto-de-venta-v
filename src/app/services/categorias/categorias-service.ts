@@ -17,6 +17,10 @@ export class CategoriasService {
         return this.http.post<any>(`${this.categoriaUrl}/crear`,payload)
     }
 
+    actualizarCategoria(id:string, payload:any){
+        return this.http.put<any>(`${this.categoriaUrl}/actualizar/${id}`,payload)
+    }
+
     eliminarCategoria(id:string){
         return this.http.delete<any>(`${this.categoriaUrl}/eliminar/${id}`)
     }

@@ -1,5 +1,5 @@
 <p-dialog
-  header="Agregar Nuevo Proveedor"
+  [header]="modoEdicion ? 'Editar Proveedor' : 'Agregar Nuevo Proveedor'"
   [modal]="true"
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
   [visible]="true"
@@ -98,7 +98,7 @@
 
   <ng-template #footer>
     <p-button
-      label="Guardar producto"
+      [label]="modoEdicion ? 'Actualizar proveedor' : 'Guardar proveedor'"
       icon="pi pi-check"
       (click)="guardarProducto()"
     />

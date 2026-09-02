@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from '@openng/optimus-ui/api';
 import { ButtonModule } from '@openng/optimus-ui/button';
@@ -14,6 +14,8 @@ import { InputTextModule } from '@openng/optimus-ui/inputtext';
 export class NuevaMarca {
 
   private messageService = inject(MessageService)
+  @Input() marcaInicial: any | null = null;
+  @Input() modoEdicion = false;
   @Output() cerrar = new EventEmitter<void>();
   @Output() guardar = new EventEmitter<any>();
 
@@ -22,9 +24,18 @@ export class NuevaMarca {
     descripcion:''
   }
 
+  ngOnInit() {
+    if (this.marcaInicial) {
+      this.marca = {
+        nombre: this.marcaInicial.nombre ?? '',
+        descripcion: this.marcaInicial.descripcion ?? ''
+      };
+    }
+  }
+
 
   guardarMarca() {
-  this.guardar.emit(this.marca);
+  this.guardar.emit({ ...this.marca, id: this.marcaInicial?.id });
   }
   cerrarDialog() {
   this.cerrar.emit();

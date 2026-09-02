@@ -13,8 +13,12 @@ export class ProductoService {
         return this.http.get<any>(`${this.marcaUrl}/obtener_todos_los_productos`)
     }
 
-    crearProducto(payload:any){
-        return this.http.post<any>(`${this.marcaUrl}/crear`,payload)
+    crearProducto(payload: FormData){
+        return this.http.post<any>(`${this.marcaUrl}/crear`, payload)
+    }
+
+    actualizarProducto(id: string, payload: FormData){
+        return this.http.put<any>(`${this.marcaUrl}/editar/${id}`, payload)
     }
 
     eliminarProducto(id:string){

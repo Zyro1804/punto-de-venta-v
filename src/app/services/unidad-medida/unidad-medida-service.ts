@@ -15,6 +15,10 @@ export class UnidadMedidaService {
 		return this.http.post<any>(`${this.unidadMedidaUrl}/crear`, payload);
 	}
 
+	actualizarUnidadDeMedida(id: string, payload: any) {
+		return this.http.put<any>(`${this.unidadMedidaUrl}/actualizar/${id}`, payload);
+	}
+
 	eliminarUnidadDeMedida(id: string) {
 		return this.http.delete<any>(`${this.unidadMedidaUrl}/eliminar/${id}`);
 	}

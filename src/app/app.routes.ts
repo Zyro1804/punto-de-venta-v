@@ -9,13 +9,14 @@ import { Subcategoria } from './pages/home/catalogos/subcategoria/subcategoria';
 import { UnidadDeMedida } from './pages/home/catalogos/unidad-de-medida/unidad-de-medida';
 import { Usuarios } from './pages/home/usuarios/usuarios';
 import { Roles } from './pages/home/usuarios/roles/roles';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
         path:'login', component : Login
     },
     {
-        path:'home', component: Home,
+        path:'home', component: Home, canActivate: [authGuard],
         children: [
             { path:'productos', component : Productos },
             { path:'proveedores', component : Proveedores },

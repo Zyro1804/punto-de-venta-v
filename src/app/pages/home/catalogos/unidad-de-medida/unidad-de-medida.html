@@ -55,5 +55,10 @@
 </div>
 
 @if (abrirModal) {
-	<app-nueva-unidad-de-medida (cerrar)="abrirModal = false" (guardar)="crearUnidad($event)"></app-nueva-unidad-de-medida>
+	<app-nueva-unidad-de-medida
+		[unidadInicial]="unidadEnEdicion"
+		[modoEdicion]="!!unidadEnEdicion"
+		(cerrar)="abrirModal = false; unidadEnEdicion = null"
+		(guardar)="crearUnidad($event)">
+	</app-nueva-unidad-de-medida>
 }

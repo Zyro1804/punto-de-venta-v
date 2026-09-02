@@ -17,6 +17,10 @@ export class ProveedorService {
         return this.http.post<any>(`${this.proveedorUlr}/crear`,payload)
     }
 
+    actualizarProveedor(id:string, payload:any){
+        return this.http.put<any>(`${this.proveedorUlr}/actualizar/${id}`,payload)
+    }
+
     eliminarProducto(id:string){
         return this.http.delete<any>(`${this.proveedorUlr}/eliminar/${id}`)
     }

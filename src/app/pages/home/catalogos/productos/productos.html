@@ -48,6 +48,7 @@
         <ng-template #header>
           <tr>
             <th>#</th>
+            <th>Imagen</th>
             <th>Nombre</th>
             <th>Clave</th>
             <th>Código de barras</th>
@@ -62,6 +63,7 @@
           </tr>
 
           <tr>
+            <th></th>
             <th></th>
             <th>
               <p-columnFilter field="nombre" type="text" placeholder="Nombre" filterOn="input" ariaLabel="Filtrar nombre"></p-columnFilter>
@@ -100,6 +102,17 @@
         <ng-template #body let-producto let-rowIndex="rowIndex">
           <tr>
             <td>{{ rowIndex + 1 }}</td>
+            <td>
+              @if (producto.imagen) {
+                <img
+                  class="product-image"
+                  [src]="obtenerUrlImagen(producto.imagen)"
+                  [alt]="'Imagen de ' + producto.nombre"
+                />
+              } @else {
+                <span class="no-image">Sin imagen</span>
+              }
+            </td>
             <td>
               <div class="product-info">
                 <strong>{{ producto.nombre }}</strong>
@@ -140,7 +153,7 @@
 
         <ng-template #emptymessage>
           <tr>
-            <td colspan="12" class="empty-message">
+            <td colspan="13" class="empty-message">
               No se encontraron productos.
             </td>
           </tr>
@@ -157,6 +170,8 @@
     [unidadesDeMedida]="unidadesDeMedida"
     [proveedores]="proveedores"
     [marcas]="marcas"
+    [productoInicial]="productoEnEdicion"
+    [modoEdicion]="!!productoEnEdicion"
     (cerrar)="cerrarNuevoProducto()"
     (guardar)="guardarProducto($event)"
   />

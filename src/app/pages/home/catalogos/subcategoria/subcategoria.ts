@@ -32,6 +32,7 @@ export class Subcategoria {
   abrirModal = false;
   categoriasDatos:any;
   loadingCategorias = signal(false);
+  subcategoriaEnEdicion: SubcategoriaItem | null = null;
 
   private readonly subcategoriasService = inject(SubcategoriasService);
   private readonly messageService = inject(MessageService);
@@ -54,6 +55,7 @@ export class Subcategoria {
   }
 
   async onAgregar(){
+    this.subcategoriaEnEdicion = null;
     this.loadingCategorias.set(true);
     try{
       this.categoriasDatos= await firstValueFrom(this.categoriasService.obtenerCategorias())
@@ -66,7 +68,18 @@ export class Subcategoria {
     
   }
 
-  editarSubcategoria(subcategoria: SubcategoriaItem) {}
+  async editarSubcategoria(subcategoria: SubcategoriaItem) {
+    this.loadingCategorias.set(true);
+    try {
+      this.categoriasDatos = await firstValueFrom(this.categoriasService.obtenerCategorias());
+      this.subcategoriaEnEdicion = subcategoria;
+      this.abrirModal = true;
+    } catch {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar las categorías' });
+    } finally {
+      this.loadingCategorias.set(false);
+    }
+  }
 
   async eliminarSubcategoria(subcategoria: SubcategoriaItem, event: Event){
     this.confirmationService.confirm({
@@ -93,10 +106,13 @@ export class Subcategoria {
   async crearSubcategoria(event: any){
     console.log(event)
     try {
-      const resp = await firstValueFrom(this.subcategoriasService.crearSubcategoria(event));
+      const resp = event.id
+        ? await firstValueFrom(this.subcategoriasService.actualizarSubcategoria(event.id, event))
+        : await firstValueFrom(this.subcategoriasService.crearSubcategoria(event));
       this.messageService.add({ severity: 'success', summary: 'Subcategoría', detail: resp.message });
       this.getSubcategorias();
       this.abrirModal = false;
+      this.subcategoriaEnEdicion = null;
     } catch (err) {
       this.messageService.add({ severity: 'error', summary: 'Subcategoría', detail: 'Error al guardar la subcategoría' });
     }
