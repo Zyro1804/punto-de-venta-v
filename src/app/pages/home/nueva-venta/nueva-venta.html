@@ -1,0 +1,197 @@
+<div class="sale-shell">
+  <section class="catalog-panel">
+    <div class="sale-toolbar">
+         <p-iconfield >
+                <p-inputicon class="pi pi-search" />
+               <input pInputText [(ngModel)]="search" type="search" placeholder="Buscar por nombre o código..." aria-label="Buscar productos"/>
+        </p-iconfield>
+
+      <p-button
+        class="scan-button"
+        icon="pi pi-barcode"
+        label="Escanear código"
+        severity="secondary"
+        [outlined]="true"
+        (click)="search.set('')"
+      ></p-button>
+      <p-button
+        class="cart-button"
+        icon="pi pi-shopping-cart"
+        [label]="'Carrito · ' + cartCount() + ' productos'"
+        severity="secondary"
+        [outlined]="true"
+        (click)="drawerVisible.set(true)"
+      ></p-button>
+      <!-- <p-button
+        class="cart-button"
+        icon="pi pi-shopping-cart"
+        [label]="Sel"
+        severity="secondary"
+        [outlined]="true"
+        (click)="drawerVisible.set(true)"
+      ></p-button> -->
+         <p-select
+            [options]=""
+            [(ngModel)]="sucursal"
+            optionLabel=""
+            optionValue=""
+            placeholder="Selecciona una sucursal"
+            [filter]="true"
+            filterBy=""
+            [showClear]="true"
+            appendTo="body"
+            class="w-full"
+          />
+    </div>
+    <div class="catalog-heading">
+      <div>
+        <p class="eyebrow">Venta de productos</p>
+        <h1>Nueva venta</h1>
+      </div>
+      <!-- <span class="product-count">{{ filteredProducts().length }} productos</span> -->
+    </div>
+    <div class="filters" role="tablist" aria-label="Categorías">
+    <!-- @for (categoria of categorias(); track categoria.id) {
+    <p-button
+        [label]="categoria.nombre"
+        [outlined]="selectedCategory()?.id !== categoria.id"
+        (click)="selectCategory(categoria)"
+    />
+    } -->
+        @for (categoria of categorias(); track categoria.id) {
+    <p-button
+        [label]="categoria.nombre"
+        [outlined]="selectedCategory()?.id !== categoria.id"
+    />
+    }
+    </div>
+    <!-- <div class="subfilters">
+      <span>Subcategoría</span>
+      @for (subcategory of subcategories(); track subcategory) {
+        <p-button
+          [label]="subcategory"
+          size="small"
+          [outlined]="selectedSubcategory() !== subcategory"
+          severity="secondary"
+          (click)="selectedSubcategory.set(subcategory)"
+        ></p-button>
+      }
+    </div> -->
+    <div class="product-grid">
+      <!-- @for (product of filteredProducts(); track product.id) {
+        <article
+          class="product-card"
+          [class.sold-out]="product.stock === 0"
+          (click)="addToCart(product)"
+        >
+          <div class="product-image">
+            <img [src]="product.image" [alt]="product.name" loading="lazy" /><p-tag
+              class="stock"
+              [value]="product.stock ? product.stock + ' en stock' : 'Agotado'"
+              [severity]="product.stock ? 'success' : 'danger'"
+            ></p-tag>
+          </div>
+          <div class="product-info">
+            <span class="product-code">{{ product.code }}</span>
+            <h2>{{ product.name }}</h2>
+            <div class="product-footer">
+              <strong>{{ formatPrice(product.price) }}</strong
+              ><p-button
+                icon="pi pi-plus"
+                [rounded]="true"
+                [text]="true"
+                [disabled]="product.stock === 0"
+                (click)="$event.stopPropagation(); addToCart(product)"
+                aria-label="Agregar producto"
+              ></p-button>
+            </div>
+          </div>
+        </article>
+      } @empty {
+        <div class="empty-state">No encontramos productos con esa búsqueda.</div>
+      } -->
+    </div>
+  </section>
+</div>
+
+<p-drawer [(visible)]="drawerVisible" position="right" styleClass="sale-drawer">
+  <ng-template pTemplate="header"
+    ><div class="drawer-title">
+      <span class="eyebrow">Orden actual</span>
+      <h2>Resumen de venta</h2>
+      <small>#TRX-8924</small>
+    </div></ng-template
+  >
+  <div class="customer-select">
+    <i class="pi pi-user"></i><span>Seleccionar cliente</span><i class="pi pi-chevron-down"></i>
+  </div>
+  <div class="cart-items">
+    @for (item of cart(); track item.product.id) {
+      <div class="cart-item">
+        <img [src]="item.product.image" [alt]="item.product.name" />
+        <div class="cart-detail">
+          <div class="cart-name">
+            <span>{{ item.product.name }}</span
+            ><p-button
+              icon="pi pi-times"
+              [text]="true"
+              severity="danger"
+              (click)="removeFromCart(item.product.id)"
+              aria-label="Eliminar producto"
+            ></p-button>
+          </div>
+          <div class="cart-bottom">
+            <div class="quantity">
+              <p-button
+                icon="pi pi-minus"
+                [text]="true"
+                size="small"
+                (click)="changeQuantity(item.product.id, -1)"
+                aria-label="Disminuir cantidad"
+              ></p-button
+              ><span>{{ item.quantity }}</span
+              ><p-button
+                icon="pi pi-plus"
+                [text]="true"
+                size="small"
+                (click)="changeQuantity(item.product.id, 1)"
+                aria-label="Aumentar cantidad"
+              ></p-button>
+            </div>
+            <strong>{{ formatPrice(item.product.price * item.quantity) }}</strong>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="cart-empty">
+        <span>+</span>
+        <p>Tu orden está vacía</p>
+        <small>Agrega productos para comenzar</small>
+      </div>
+    }
+  </div>
+  <div class="checkout">
+    <div>
+      <span>Subtotal ({{ cartCount() }} artículos)</span><b>{{ formatPrice(subtotal()) }}</b>
+    </div>
+    <div>
+      <span>IVA (8.5%)</span><b>{{ formatPrice(tax()) }}</b>
+    </div>
+    <div class="total-row">
+      <span>Total</span><strong>{{ formatPrice(total()) }}</strong>
+    </div>
+    <p-button
+      class="pay-button"
+      label="Pagar"
+      [badge]="formatPrice(total())"
+      [disabled]="!cartCount()"
+    ></p-button
+    ><p-button
+      class="void-button"
+      label="Anular orden"
+      [text]="true"
+      severity="danger"
+      (click)="cart.set([])"
+    ></p-button>
+  </div>
+</p-drawer>

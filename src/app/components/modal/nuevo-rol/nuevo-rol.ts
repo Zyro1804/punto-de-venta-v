@@ -1,6 +1,5 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MessageService } from '@openng/optimus-ui/api';
 import { ButtonModule } from '@openng/optimus-ui/button';
 import { DialogModule } from '@openng/optimus-ui/dialog';
 import { InputTextModule } from '@openng/optimus-ui/inputtext';
@@ -12,7 +11,8 @@ import { InputTextModule } from '@openng/optimus-ui/inputtext';
   templateUrl: './nuevo-rol.html',
 })
 export class NuevoRol {
-  private messageService = inject(MessageService)
+  @Input() rolInicial: any | null = null;
+  @Input() modoEdicion = false;
   @Output() cerrar = new EventEmitter<void>();
   @Output() guardar = new EventEmitter<any>();
 
@@ -21,9 +21,18 @@ export class NuevoRol {
     description:''
   }
 
+  ngOnInit() {
+    if (this.rolInicial) {
+      this.rol = {
+        name: this.rolInicial.name ?? this.rolInicial.nombre ?? '',
+        description: this.rolInicial.description ?? this.rolInicial.descripcion ?? '',
+      };
+    }
+  }
+
 
    guardarRol() {
-    this.guardar.emit(this.rol);
+    this.guardar.emit({ ...this.rol, id: this.rolInicial?.id });
   }
 
   cerrarDialog() {

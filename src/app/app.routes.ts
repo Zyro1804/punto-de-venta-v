@@ -9,7 +9,9 @@ import { Subcategoria } from './pages/home/catalogos/subcategoria/subcategoria';
 import { UnidadDeMedida } from './pages/home/catalogos/unidad-de-medida/unidad-de-medida';
 import { Usuarios } from './pages/home/usuarios/usuarios';
 import { Roles } from './pages/home/usuarios/roles/roles';
+import { Sucursales } from './pages/home/sucursales/sucursales';
 import { authGuard } from './guards/auth.guard';
+import { NuevaVenta } from './pages/home/nueva-venta/nueva-venta';
 
 export const routes: Routes = [
     {
@@ -26,6 +28,8 @@ export const routes: Routes = [
             { path:'unidades-de-medida', component : UnidadDeMedida},
             { path: 'usuarios', component : Usuarios},
             { path: 'roles', component : Roles}
+            ,{ path: 'sucursales', component : Sucursales},
+            {path: 'nueva-venta', component: NuevaVenta},
         ]
     }
 ];

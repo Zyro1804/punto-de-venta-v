@@ -18,6 +18,10 @@ export class RolesService {
     return this.http.post<any>(`${this.rolesUrl}/crear`, payload);
   }
 
+  actualizarRol(id: string | number, payload: RolNuevo) {
+    return this.http.put<any>(`${this.rolesUrl}/actualizar/${id}`, payload);
+  }
+
   eliminarRol(id: string | number) {
     return this.http.delete<any>(`${this.rolesUrl}/${id}`);
   }

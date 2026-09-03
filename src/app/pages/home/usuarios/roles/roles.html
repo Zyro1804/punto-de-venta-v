@@ -63,14 +63,22 @@
           <td>{{ rol.description || 'Sin descripción' }}</td>
           <td>
             <div class="actions">
-              <!-- <p-button
+              <p-button
+                icon="pi pi-pencil"
+                severity="info"
+                [text]="true"
+                [rounded]="true"
+                pTooltip="Editar"
+                (click)="editarRol(rol)"
+              />
+              <p-button
                 icon="pi pi-trash"
                 severity="danger"
                 [text]="true"
                 [rounded]="true"
                 pTooltip="Eliminar"
                 (click)="eliminarRol(rol, $event)"
-              /> -->
+              />
             </div>
           </td>
         </tr>
@@ -87,7 +95,9 @@
 
 @if (abrirModal) {
   <app-nuevo-rol
-    (cerrar)="abrirModal = false"
+    [rolInicial]="rolEnEdicion"
+    [modoEdicion]="!!rolEnEdicion"
+    (cerrar)="abrirModal = false; rolEnEdicion = null"
     (guardar)="crearRol($event)"
   ></app-nuevo-rol>
 }

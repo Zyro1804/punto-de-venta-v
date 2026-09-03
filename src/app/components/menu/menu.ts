@@ -34,7 +34,7 @@ export class Menu {
         {
           label: 'Nueva venta',
           icon: 'pi pi-plus',
-          routerLink: '/ventas/nueva'
+          routerLink: 'nueva-venta'
         },
         {
           label: 'Historial',
@@ -110,6 +110,18 @@ export class Menu {
         }
       ]
     },
+       {
+      label: 'Sucursales',
+      icon: 'pi pi-building',
+      items: [
+        {
+          label: 'Lista de Sucursales',
+          icon: 'pi pi-building',
+          routerLink: 'sucursales'
+        },
+      
+      ]
+    },
     {
       label: 'Clientes',
       icon: 'pi pi-users',
@@ -164,5 +176,9 @@ export class Menu {
     localStorage.clear();
     sessionStorage.clear();
     await this.router.navigateByUrl('/login');
+  }
+
+  irVenta(){
+    this.router.navigateByUrl('/home/nueva-venta')
   }
 }

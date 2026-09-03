@@ -20,6 +20,7 @@ export interface Rol {
   updatedAt?: string;
 }
 export interface RolNuevo {
+    id?: string | number;
     name: string;
   description?: string;
 }
@@ -34,6 +35,7 @@ export class Roles {
   roles = signal<Rol[]>([]);
   loading = signal(true);
   abrirModal=false;
+  rolEnEdicion: Rol | null = null;
 
   private readonly rolesService = inject(RolesService);
   private readonly messageService = inject(MessageService);
@@ -61,9 +63,14 @@ export class Roles {
 
   
   onAgregar() {
+    this.rolEnEdicion = null;
     this.abrirModal = true;
   }
 
+  editarRol(rol: Rol) {
+    this.rolEnEdicion = rol;
+    this.abrirModal = true;
+  }
 
   async crearRol(payload:RolNuevo){
     console.log(payload)
@@ -77,19 +84,27 @@ export class Roles {
     }
 
     try{
-      const resp = await firstValueFrom(this.rolesService.crearRol(payload))
-      this.messageService.add({ severity: 'success', summary: 'Roles', detail: resp.message || 'Rol creado correctamente' });
+      const resp = payload.id
+        ? await firstValueFrom(this.rolesService.actualizarRol(payload.id, payload))
+        : await firstValueFrom(this.rolesService.crearRol(payload));
+      this.messageService.add({
+        severity: 'success',
+        summary: payload.id ? 'Rol actualizado' : 'Rol creado',
+        detail: resp.message || (payload.id ? 'Rol actualizado correctamente' : 'Rol creado correctamente'),
+      });
       this.abrirModal = false;
+      this.rolEnEdicion = null;
       this.getRoles()
     }catch(err:any){
        this.messageService.add({ severity: 'error',summary: 'Rol',detail: err?.error?.message || 'No se pudo guardar el rol',});
     }
   }
 
-  async eliminarRol(rol: Rol, event: Event) {
+  async eliminarRol(rol: any, event: Event) {
+    console.log(rol)
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: `¿Deseas eliminar el rol "${rol.nombre}"?`,
+      message: `¿Deseas eliminar el rol "${rol.name}"?`,
       header: 'Confirmar eliminación',
       icon: 'pi pi-exclamation-triangle',
       rejectLabel: 'Cancelar',

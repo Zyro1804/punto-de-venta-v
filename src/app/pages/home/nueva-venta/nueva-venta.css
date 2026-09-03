@@ -1,0 +1,310 @@
+.sale-shell {
+  min-height: 100%;
+}
+
+.catalog-panel {
+  min-height: calc(100vh - 72px);
+  padding: 28px clamp(18px, 3vw, 48px) 48px;
+}
+
+.sale-toolbar,
+.catalog-heading,
+.product-footer,
+.cart-bottom {
+  display: flex;
+  align-items: center;
+}
+
+.sale-toolbar {
+  gap: 12px;
+  padding-bottom: 22px;
+}
+
+.search-box {
+  max-width: 650px;
+}
+
+.search-icon {
+  margin-right: 8px;
+}
+
+.search-box input {
+  flex: 1;
+}
+
+.search-box kbd {
+  padding: 4px 7px;
+  font-size: 11px;
+}
+
+.catalog-heading {
+  align-items: end;
+  justify-content: space-between;
+  padding: 32px 0 22px;
+}
+
+.catalog-heading h1,
+.drawer-title h2 {
+  margin: 0;
+}
+
+.catalog-heading h1 {
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1;
+}
+
+.eyebrow,
+.product-code {
+  margin: 0 0 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.filters,
+.subfilters {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+
+.subfilters {
+  padding-bottom: 28px;
+}
+
+.subfilters > span {
+  margin-right: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+.product-card {
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+}
+
+.product-card.sold-out {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.product-image {
+  position: relative;
+  height: 180px;
+  padding: 14px;
+}
+
+.product-image img,
+.cart-item img {
+  object-fit: contain;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: multiply;
+}
+
+.stock {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.product-info {
+  padding: 14px;
+}
+
+.product-info h2 {
+  min-height: 38px;
+  margin: 7px 0 18px;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.product-footer {
+  justify-content: space-between;
+}
+
+.product-footer strong {
+  font-size: 19px;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  padding: 70px;
+  text-align: center;
+}
+
+.drawer-title h2 {
+  font-size: 25px;
+}
+
+.drawer-title small {
+  font-size: 11px;
+}
+
+.customer-select {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 13px;
+}
+
+.customer-select span {
+  flex: 1;
+}
+
+.cart-items {
+  padding: 24px 0;
+}
+
+.cart-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.cart-item img {
+  width: 58px;
+  height: 58px;
+}
+
+.cart-detail {
+  flex: 1;
+}
+
+.cart-name {
+  display: flex;
+  gap: 8px;
+  align-items: start;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.cart-name span {
+  flex: 1;
+}
+
+.cart-bottom {
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.cart-bottom strong {
+  font-size: 12px;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+}
+
+.quantity span {
+  width: 23px;
+  text-align: center;
+  font-size: 11px;
+}
+
+.cart-empty {
+  padding: 65px 0;
+  text-align: center;
+}
+
+.cart-empty p {
+  margin: 10px 0 5px;
+  font-size: 14px;
+}
+
+.cart-empty small {
+  font-size: 11px;
+}
+
+.checkout {
+  padding-top: 18px;
+  font-size: 12px;
+}
+
+.checkout > div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.checkout .total-row {
+  padding-top: 14px;
+  margin-top: 14px;
+  font-size: 15px;
+}
+
+.checkout .total-row strong {
+  font-size: 22px;
+}
+
+.pay-button,
+.void-button {
+  width: 100%;
+}
+
+.pay-button {
+  margin-top: 10px;
+}
+
+@media (max-width: 700px) {
+  .catalog-panel {
+    padding: 18px 14px 30px;
+  }
+
+  .sale-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    max-width: none;
+    flex-basis: 100%;
+  }
+
+  .scan-button,
+  .cart-button {
+    flex: 1;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .product-image {
+    height: 140px;
+  }
+
+  .product-info {
+    padding: 10px;
+  }
+
+  .product-info h2 {
+    font-size: 14px;
+  }
+
+  .product-footer strong {
+    font-size: 16px;
+  }
+
+  .subfilters {
+    padding-bottom: 18px;
+  }
+}

@@ -1,0 +1,59 @@
+<p-dialog
+  [header]="modoEdicion ? 'Editar sucursal' : 'Agregar nueva sucursal'"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [visible]="true"
+  [style]="{ width: '50rem' }"
+  [draggable]="false"
+  (onHide)="cerrarDialog()"
+>
+  <div class="form-sucursal">
+    <div class="section">
+      <h3>Información de la sucursal</h3>
+      <div class="form-grid">
+        <div class="field">
+          <label class="required">Nombre</label>
+          <input pInputText [(ngModel)]="sucursal.nombre" placeholder="Nombre de la sucursal" required />
+        </div>
+        <div class="field">
+          <label class="required">Número de sucursal</label>
+          <p-inputnumber [(ngModel)]="sucursal.numero_sucursal" [useGrouping]="false" [min]="1" placeholder="Número" />
+        </div>
+        <div class="field field-full">
+          <label class="required">Ubicación</label>
+          <input pInputText [(ngModel)]="sucursal.ubicacion" placeholder="Ubicación de la sucursal" required />
+        </div>
+        <div class="field field-full">
+          <label class="required">Encargado de sucursal</label>
+          <p-select
+            [options]="usuarios"
+            [(ngModel)]="sucursal.encargado_de_tienda"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Selecciona un usuario"
+            [filter]="true"
+            filterBy="name,nombre,email"
+            [showClear]="true"
+            appendTo="body"
+            class="w-full"
+          >
+            <ng-template #item let-usuario>
+              {{ usuario.name || usuario.nombre }}{{ usuario.email ? ' - ' + usuario.email : '' }}
+            </ng-template>
+            <ng-template #selectedItem let-usuario>
+              {{ usuario?.name || usuario?.nombre || 'Selecciona un usuario' }}
+            </ng-template>
+          </p-select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #footer>
+    <p-button
+      [label]="modoEdicion ? 'Actualizar sucursal' : 'Guardar sucursal'"
+      icon="pi pi-check"
+      (click)="guardarSucursal()"
+    />
+  </ng-template>
+</p-dialog>

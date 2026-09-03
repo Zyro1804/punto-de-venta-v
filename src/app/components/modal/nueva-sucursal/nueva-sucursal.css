@@ -1,0 +1,34 @@
+.form-sucursal {
+  padding: 0.5rem 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+.required::after {
+  content: ' *';
+  color: var(--red-500, #ef4444);
+}
+
+.w-full {
+  width: 100%;
+}
+
+@media (max-width: 575px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
