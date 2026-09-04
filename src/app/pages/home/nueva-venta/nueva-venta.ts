@@ -11,6 +11,9 @@ import { TagModule } from '@openng/optimus-ui/tag';
 import { CategoriasService } from '../../../services/categorias/categorias-service';
 import { firstValueFrom } from 'rxjs';
 import { Categoria } from '../catalogos/categorias/categorias';
+import { SubcategoriaItem } from '../catalogos/subcategoria/subcategoria';
+import { SubcategoriasService } from '../../../services/categorias/subcategorias-service';
+import { SucursalesService } from '../../../services/sucursales/sucursales-service';
 
 interface Product {
   id: number;
@@ -32,9 +35,12 @@ interface Product {
 export class NuevaVenta {
   
   private readonly categoriasService= inject(CategoriasService)
-
+  private readonly subcategoriasService = inject(SubcategoriasService)
+  private readonly sucursalesService = inject(SucursalesService)
   ngOnInit(): void {
-    this.obtenerCategorias()    
+    this.obtenerCategorias() 
+    this.obtenerSubcategorias()   
+    this.obtenerSucursales()
   }
 
   readonly categories = ['Todos', 'Electrónica', 'Accesorios', 'Hogar', 'Oficina'];
@@ -46,11 +52,14 @@ export class NuevaVenta {
     { id: 5, name: 'Mochila urbana commuter', code: 'ACC-901', category: 'Accesorios', subcategory: 'Bolsos', price: 85, stock: 8, image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80' },
     { id: 6, name: 'Lámpara de escritorio Line', code: 'OFF-310', category: 'Oficina', subcategory: 'Escritorio', price: 64.90, stock: 15, image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&q=80' },
   ];
-  sucursal='';
+  sucursales:any;
+  sucursal:any;
   categorias=signal<Categoria[]>([])
+  subcategorias=signal<SubcategoriaItem[]>([])
+  suursales:any;
   search = signal('');
   selectedCategory = signal<Categoria | null>(null);
-  selectedSubcategory = signal('Todas');
+  selectedSubcategory = signal<SubcategoriaItem | null>(null);
   cart = signal<{ product: Product; quantity: number }[]>([]);
   drawerVisible = signal(false);
   // subcategories = computed(() => ['Todas', ...new Set(this.products.filter(product => this.selectedCategory() === 'Todos' || product.category === this.selectedCategory()).map(product => product.subcategory))]);
@@ -65,6 +74,15 @@ export class NuevaVenta {
   tax = computed(() => this.subtotal() * 0.085);
   total = computed(() => this.subtotal() + this.tax());
 
+  async obtenerSubcategorias(){
+    try{
+      const resp = await firstValueFrom(this.subcategoriasService.obtenerSubcategorias())
+      console.log(resp,'subcategorias');
+      this.subcategorias.set(resp.data) 
+    }catch(err:any){
+
+    }
+  }
 
   async obtenerCategorias(){
     try{
@@ -76,10 +94,19 @@ export class NuevaVenta {
     }
   }
 
-  // selectCategory(category: string) {
-  //   this.selectedCategory.set(category);
-  //   this.selectedSubcategory.set('Todas');
-  // }
+  async obtenerSucursales(){
+    try{
+      const resp = await firstValueFrom(this.sucursalesService.obtenerSucursales())
+      console.log(resp)
+      this.sucursales=resp.data
+    }catch(err:any){
+
+    }
+  }
+  selectCategory(categoria: Categoria) {
+    this.selectedCategory.set(categoria);
+    // this.selectedSubcategory.set();
+  }
 
   addToCart(product: Product) {
     if (!product.stock) return;

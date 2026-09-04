@@ -30,18 +30,18 @@
         [outlined]="true"
         (click)="drawerVisible.set(true)"
       ></p-button> -->
-         <p-select
-            [options]=""
-            [(ngModel)]="sucursal"
-            optionLabel=""
-            optionValue=""
-            placeholder="Selecciona una sucursal"
-            [filter]="true"
-            filterBy=""
-            [showClear]="true"
-            appendTo="body"
-            class="w-full"
-          />
+       <p-select
+        [options]="sucursales"
+        [(ngModel)]="sucursal"
+        optionLabel="nombre"
+        optionValue="id"
+        placeholder="Selecciona una sucursal"
+        [filter]="true"
+        filterBy="nombre"
+        [showClear]="true"
+        appendTo="body"
+        class="w-full"
+      />
     </div>
     <div class="catalog-heading">
       <div>
@@ -62,14 +62,15 @@
     <p-button
         [label]="categoria.nombre"
         [outlined]="selectedCategory()?.id !== categoria.id"
+        (click)="selectCategory(categoria)"
     />
     }
     </div>
     <!-- <div class="subfilters">
       <span>Subcategoría</span>
-      @for (subcategory of subcategories(); track subcategory) {
+      @for (subcategoria of subcategorias(); track subcategoria.id) {
         <p-button
-          [label]="subcategory"
+          [label]="subcategoria.nombre"
           size="small"
           [outlined]="selectedSubcategory() !== subcategory"
           severity="secondary"
@@ -77,6 +78,19 @@
         ></p-button>
       }
     </div> -->
+    
+    <div class="subfilters">
+      <span>Subcategoría</span>
+      @for (subcategoria of subcategorias(); track subcategoria.id) {
+        <p-button
+          [label]="subcategoria.nombre"
+          size="small"
+          [outlined]="selectedSubcategory()?.id !== subcategoria.id"
+          severity="secondary"
+        ></p-button>
+      }
+    </div>
+    
     <div class="product-grid">
       <!-- @for (product of filteredProducts(); track product.id) {
         <article
