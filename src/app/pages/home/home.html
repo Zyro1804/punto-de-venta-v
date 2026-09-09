@@ -6,22 +6,105 @@
 
   <div class="main">
 
-      <app-header
-      class="header"
-      (menuClick)="openMenu()">
+    <app-header class="header" (menuClick)="openMenu()">
     </app-header>
 
     <main class="content">
+      @if (isDashboardVisible()) {
+      <section class="dashboard" aria-labelledby="dashboard-title">
+        <header class="dashboard-heading">
+          <div>
+            <p class="eyebrow">Resumen operativo</p>
+            <h1 id="dashboard-title">Buenos días, este es tu resumen</h1>
+            <p class="subtitle">Consulta el movimiento de tu punto de venta y las tareas que requieren atención.</p>
+          </div>
+          <div class="date-stamp"><i class="pi pi-calendar" aria-hidden="true"></i> 09 de septiembre, 2026</div>
+        </header>
+
+        <div class="summary-grid">
+          @for (card of summaryCards; track card.label) {
+          <article class="summary-card">
+            <div class="card-topline"><span class="card-label">{{ card.label }}</span><span class="metric-icon"
+                [class]="card.tone"><i [class]="card.icon" aria-hidden="true"></i></span></div>
+            <strong class="metric-value">{{ card.value }}</strong>
+            <span class="metric-detail" [class.warning-detail]="card.tone === 'amber' || card.tone === 'red'"><i
+                class="pi pi-arrow-up" aria-hidden="true"></i>{{ card.detail }}</span>
+          </article>
+          }
+        </div>
+
+        <div class="charts-grid">
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Ventas de la semana</h2>
+                <p>Rendimiento de los últimos 7 días</p>
+              </div><span class="panel-kpi">$40.2k <small>total</small></span>
+            </div>
+            <div class="chart-area line-chart"><p-chart type="line" [data]="salesChartData"
+                [options]="salesChartOptions"></p-chart></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Ventas por categoría</h2>
+                <p>Distribución del mes actual</p>
+              </div>
+            </div>
+            <div class="chart-area doughnut-chart"><p-chart type="doughnut" [data]="categoryChartData"
+                [options]="categoryChartOptions"></p-chart></div>
+                 <div class="espacio"></div>
+          </article>
+        </div>
+
+        <div class="activity-grid">
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Ventas recientes</h2>
+                <p>Últimas operaciones registradas</p>
+              </div><span class="view-link">Ver todas <i class="pi pi-arrow-up-right" aria-hidden="true"></i></span>
+            </div>
+            <div class="sales-list">
+              @for (sale of recentSales; track sale.id) {
+              <div class="sale-row">
+                <div class="sale-avatar">{{ sale.customer.charAt(0) }}</div>
+                <div class="sale-info"><strong>{{ sale.customer }}</strong><span>{{ sale.id }} · {{ sale.date }}</span>
+                </div><span class="sale-items">{{ sale.items }} artículos</span><strong class="sale-total">{{ sale.total
+                  }}</strong><p-tag [value]="sale.status" [severity]="sale.severity"></p-tag>
+              </div>
+              }
+            </div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Inventario bajo</h2>
+                <p>Productos que necesitan reposición</p>
+              </div><i class="pi pi-box panel-heading-icon" aria-hidden="true"></i>
+            </div>
+            <div class="stock-list">
+              @for (product of lowStock; track product.name) {
+              <div class="stock-row">
+                <div class="stock-name"><strong>{{ product.name }}</strong><span>Mínimo recomendado: {{ product.minimum
+                    }}</span></div>
+                <div class="stock-count"><strong>{{ product.stock }}</strong><span>unidades</span></div>
+              </div>
+              }
+            </div>
+            <span class="stock-action"><i class="pi pi-arrow-right" aria-hidden="true"></i> Revisar inventario</span>
+          </article>
+        </div>
+      </section>
+      }
       <router-outlet></router-outlet>
-      
+
     </main>
 
   </div>
-    <p-drawer
-    [(visible)]="menuVisible"
-      position="left">
+  <p-drawer [(visible)]="menuVisible" position="left">
     <app-menu></app-menu>
   </p-drawer>
-    <p-toast></p-toast>
-<p-confirmdialog />
+  <p-toast></p-toast>
+  <p-confirmdialog />
 </div>

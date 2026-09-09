@@ -18,3 +18,20 @@ export const authGuard: CanActivateFn = () => {
     queryParams: { sessionExpired: 'true' },
   });
 };
+
+export const roleGuard: CanActivateFn = (route) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const hiddenForRoles = route.data['hiddenForRoles'] as string[] | undefined;
+
+  if (!hiddenForRoles?.length) {
+    return true;
+  }
+
+  const currentRole = authService.getRolToken()?.trim().toUpperCase();
+  const isBlocked = currentRole
+    ? hiddenForRoles.some(role => role.trim().toUpperCase() === currentRole)
+    : true;
+
+  return isBlocked ? router.createUrlTree(['/acceso-denegado']) : true;
+};

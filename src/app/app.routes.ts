@@ -10,12 +10,22 @@ import { UnidadDeMedida } from './pages/home/catalogos/unidad-de-medida/unidad-d
 import { Usuarios } from './pages/home/usuarios/usuarios';
 import { Roles } from './pages/home/usuarios/roles/roles';
 import { Sucursales } from './pages/home/sucursales/sucursales';
-import { authGuard } from './guards/auth.guard';
 import { NuevaVenta } from './pages/home/nueva-venta/nueva-venta';
+import { authGuard, roleGuard } from './guards/auth.guard';
+import { AccesoDenegado } from './pages/acceso-denegado/acceso-denegado';
+import { NoEncontrado } from './pages/no-encontrado/no-encontrado';
 
 export const routes: Routes = [
     {
         path:'login', component : Login
+    },
+    {
+        path: 'acceso-denegado',
+        component: AccesoDenegado,
+        canActivate: [authGuard]
+    },
+    {
+        path: '', redirectTo: 'home', pathMatch : 'full'
     },
     {
         path:'home', component: Home, canActivate: [authGuard],
@@ -26,10 +36,23 @@ export const routes: Routes = [
             { path: 'categorias', component : Categorias},
             { path:'subcategorias', component : Subcategoria},
             { path:'unidades-de-medida', component : UnidadDeMedida},
-            { path: 'usuarios', component : Usuarios},
-            { path: 'roles', component : Roles}
+            {
+                path: 'usuarios',
+                component: Usuarios,
+                canActivate: [roleGuard],
+                data: { hiddenForRoles: ['ADMINISTRADOR',] }
+            },
+            {
+                path: 'roles',
+                component: Roles,
+                canActivate: [roleGuard],
+                data: { hiddenForRoles: ['ADMINISTRADOR'] }
+            }
             ,{ path: 'sucursales', component : Sucursales},
             {path: 'nueva-venta', component: NuevaVenta},
         ]
+    },
+    {
+        path: '**', component: NoEncontrado
     }
 ];

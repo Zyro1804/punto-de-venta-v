@@ -47,4 +47,17 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.tokenDataKey);
   }
+  getRolToken() {
+    try {
+      const tokenData = JSON.parse(
+        localStorage.getItem(this.tokenDataKey) || '{}'
+      );
+
+      const role = tokenData.role;
+      const name = role.name.toUpperCase();
+      return name
+    } catch {
+      return null;
+    }
+  }
 }

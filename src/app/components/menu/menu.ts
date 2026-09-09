@@ -6,6 +6,14 @@ import { MenuModule } from '@openng/optimus-ui/menu';
 import { PanelMenuModule } from '@openng/optimus-ui/panelmenu';
 import { AuthService } from '../../services/auth/auth-service';
 
+interface MenuItem {
+  label: string;
+  icon?: string;
+  routerLink?: string;
+  items?: MenuItem[];
+  hiddenForRoles?: string[];
+}
+
 @Component({
   imports: [ PanelMenuModule, MenuModule, ButtonModule],
   selector: 'app-menu',
@@ -15,17 +23,19 @@ import { AuthService } from '../../services/auth/auth-service';
 export class Menu {
   private router = inject(Router);
   private authService = inject(AuthService)
+  roleName: string | null = null;
+  
   usuario:any;
-  // ngOnInit(): void {
-  //  this.obtenerDatosUsuario()
-  // }
+  ngOnInit() : void {
+   this.obtenerRol()
+  }
 
 
-   items = [
+  items: MenuItem[] = [
     {
       label: 'Inicio',
       icon: 'pi pi-home',
-      routerLink: '/inicio'
+      routerLink: '/home'
     },
     {
       label: 'Ventas',
@@ -144,6 +154,7 @@ export class Menu {
     {
       label: 'Usuarios',
       icon: 'pi pi-user',
+      hiddenForRoles: ['ADMINISTRADOR'],
       items: [
         {
           label: 'Lista de Usuarios',
@@ -164,6 +175,22 @@ export class Menu {
     }
   ];
 
+  visibleItems: MenuItem[] = this.items;
+
+  private filterItemsByRole(items: MenuItem[]): MenuItem[] {
+    const currentRole = this.roleName?.trim().toUpperCase();
+
+    return items
+      .filter(item => !currentRole || !item.hiddenForRoles?.some(
+        role => role.trim().toUpperCase() === currentRole
+      ))
+      .map(item => item.items
+        ? { ...item, items: this.filterItemsByRole(item.items) }
+        : item
+      )
+      .filter(item => !item.items || item.items.length > 0 || !!item.routerLink);
+  }
+
   logoutItems = [
     {
       label: 'Cerrar sesión',
@@ -180,5 +207,16 @@ export class Menu {
 
   irVenta(){
     this.router.navigateByUrl('/home/nueva-venta')
+  }
+
+  async obtenerRol(){
+    try{
+      const rol = this.authService.getRolToken()
+      console.log('Este es rol de la persona',rol)
+      this.roleName = rol
+      this.visibleItems = this.filterItemsByRole(this.items)
+    }catch(err:any){
+
+    }
   }
 }
