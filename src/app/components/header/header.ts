@@ -24,6 +24,16 @@ export class Header {
     console.log('TOKEN DE USUARIO',this.usuario)
   } 
 
+  obtenerIniciales(nombre?: string): string {
+    return nombre
+      ?.trim()
+      .split(/\s+/)
+      .map(palabra => palabra[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() ?? '';
+  }
+
   openMenu() {
     this.menuClick.emit();
   }

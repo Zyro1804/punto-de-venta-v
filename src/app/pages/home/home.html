@@ -18,7 +18,31 @@
             <h1 id="dashboard-title">Buenos días, este es tu resumen</h1>
             <p class="subtitle">Consulta el movimiento de tu punto de venta y las tareas que requieren atención.</p>
           </div>
-          <div class="date-stamp"><i class="pi pi-calendar" aria-hidden="true"></i> 09 de septiembre, 2026</div>
+          <div class="dashboard-filters">
+            <p-select
+              [options]="sucursales"
+              [(ngModel)]="sucursal"
+              optionLabel="nombre"
+              optionValue="id"
+              placeholder="Selecciona una sucursal"
+              [filter]="true"
+              filterBy="nombre"
+              [showClear]="true"
+              appendTo="body"
+              class="branch-filter">
+            </p-select>
+            <input
+              class="date-filter"
+              type="date"
+              [(ngModel)]="fecha"
+              aria-label="Fecha del dashboard">
+            <p-button
+              label="Cargar datos"
+              icon="pi pi-refresh"
+              (click)="cargarDatos()">
+            </p-button>
+            <span class="date-stamp"><i class="pi pi-calendar" aria-hidden="true"></i> {{ nombreSucursal() }} · {{ fechaCargada }}</span>
+          </div>
         </header>
 
         <div class="summary-grid">

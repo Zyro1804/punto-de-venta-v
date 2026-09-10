@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Menu } from '../../components/menu/menu';
 import { Header } from '../../components/header/header';
 import { DrawerModule } from '@openng/optimus-ui/drawer';
@@ -8,13 +9,16 @@ import { RouterOutlet } from '@angular/router';
 import { ConfirmDialogModule } from '@openng/optimus-ui/confirmdialog';
 import { ChartModule } from '@openng/optimus-ui/chart';
 import { TagModule } from '@openng/optimus-ui/tag';
+import { SelectModule } from '@openng/optimus-ui/select';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, firstValueFrom } from 'rxjs';
+import { SucursalesService } from '../../services/sucursales/sucursales-service';
+import { ButtonModule } from '@openng/optimus-ui/button';
 
 type TagSeverity = 'success' | 'warn' | 'secondary' | 'info' | 'danger' | 'contrast' | null;
 
 @Component({
-  imports: [Menu, Header, DrawerModule, Toast, RouterOutlet, ConfirmDialogModule, ChartModule, TagModule],
+  imports: [Menu, Header, DrawerModule, Toast, RouterOutlet, ConfirmDialogModule, ChartModule, TagModule, FormsModule, SelectModule, ButtonModule],
   providers: [MessageService, ConfirmationService],
   selector: 'app-home',
   styleUrl: './home.css',
@@ -23,7 +27,12 @@ type TagSeverity = 'success' | 'warn' | 'secondary' | 'info' | 'danger' | 'contr
 export class Home {
 
   private readonly router = inject(Router);
+  private readonly sucursalesService = inject(SucursalesService);
   readonly currentUrl = signal(this.router.url);
+  sucursales: Array<{ id: string | number; nombre: string }> = [];
+  sucursal: string | number | null = null;
+  fecha = this.obtenerFechaActual();
+  fechaCargada = this.fecha;
 
   readonly summaryCards = [
     { label: 'Ventas totales', value: '$48,280', detail: '+12.8% vs. mes anterior', icon: 'pi pi-chart-line', tone: 'blue' },
@@ -83,6 +92,33 @@ export class Home {
   constructor() {
     this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => this.currentUrl.set(event.urlAfterRedirects));
+  }
+
+  ngOnInit(): void {
+    this.obtenerSucursales();
+  }
+
+  async obtenerSucursales(): Promise<void> {
+    try {
+      const response = await firstValueFrom(this.sucursalesService.obtenerSucursales());
+      this.sucursales = response.data ?? [];
+    } catch {
+      this.sucursales = [];
+    }
+  }
+
+  cargarDatos(): void {
+    this.fechaCargada = this.fecha;
+  }
+
+  nombreSucursal(): string {
+    return this.sucursales.find(sucursal => sucursal.id === this.sucursal)?.nombre ?? 'Todas las sucursales';
+  }
+
+  private obtenerFechaActual(): string {
+    const ahora = new Date();
+    const offset = ahora.getTimezoneOffset() * 60000;
+    return new Date(ahora.getTime() - offset).toISOString().slice(0, 10);
   }
 
   isDashboardVisible(): boolean {

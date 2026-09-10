@@ -94,6 +94,28 @@
   white-space: nowrap;
 }
 
+.dashboard-filters {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: .65rem;
+}
+
+.branch-filter {
+  min-width: 220px;
+}
+
+.date-filter {
+  min-height: 2.5rem;
+  padding: .65rem .75rem;
+  border: 1px solid var(--p-surface-border);
+  border-radius: 7px;
+  color: var(--p-text-color);
+  background: var(--p-form-field-background);
+  font: inherit;
+}
+
 .summary-grid,
 .charts-grid,
 .activity-grid {
@@ -369,5 +391,16 @@
 @media (max-width: 460px) {
   .summary-grid {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard-filters {
+    justify-content: flex-start;
+  }
+
+  .branch-filter,
+  .date-filter,
+  .dashboard-filters p-button,
+  .date-stamp {
+    width: 100%;
   }
 }
