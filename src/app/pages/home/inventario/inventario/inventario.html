@@ -1,0 +1,144 @@
+<section class="container inventory-page">
+  <header class="header">
+    <div class="header-info">
+      <p class="eyebrow">Control de existencias</p>
+      <h1>Inventario</h1>
+      <p>Consulta las existencias por producto, sucursal y lote.</p>
+    </div>
+  </header>
+
+  <div class="filters" aria-label="Filtros de inventario">
+    <p-select
+      [options]="sucursales()"
+      [(ngModel)]="selectedSucursal"
+      optionLabel="nombre"
+      optionValue="id"
+      placeholder="Todas las sucursales"
+      [showClear]="true"
+      [filter]="true"
+      filterBy="nombre"
+      appendTo="body"
+    ></p-select>
+    <p-select
+      [options]="productos()"
+      [(ngModel)]="selectedProducto"
+      optionLabel="nombre"
+      optionValue="id"
+      placeholder="Todos los productos"
+      [showClear]="true"
+      [filter]="true"
+      filterBy="nombre"
+      appendTo="body"
+    ></p-select>
+    <p-button label="Aplicar filtros" icon="pi pi-filter" (click)="aplicarFiltros()"></p-button>
+  </div>
+
+  @if (error()) {
+    <div class="state error-state" role="alert">
+      <i class="pi pi-exclamation-circle"></i>{{ error() }}
+    </div>
+  }
+  @if (!loading() && !error() && inventario().length === 0) {
+    <div class="state">
+      <i class="pi pi-inbox"></i>No hay existencias para los filtros seleccionados.
+    </div>
+  }
+
+  <div class="table-container">
+    <p-table
+      [value]="inventario()"
+      [loading]="loading()"
+      [paginator]="true"
+      [lazy]="true"
+      [rows]="limit"
+      [first]="(page() - 1) * limit"
+      [totalRecords]="total()"
+      [rowsPerPageOptions]="[10]"
+      (onPage)="cambiarPagina($event)"
+    >
+      <ng-template #header
+        ><tr>
+          <th>Imagen</th>
+          <th>Codigo Barra</th>
+          <th>Producto</th>
+          <th>Sucursal</th>
+          <th>Stock total</th>
+          <th>Próxima caducidad</th>
+          <th>Estado</th>
+          <th></th></tr
+      ></ng-template>
+      <ng-template #body let-item>
+        <tr class="selectable-row" (click)="seleccionar(item)">
+            <td>  
+                            @if (item.producto.imagen) {
+                                <img
+                                class="product-image"
+                                [src]="obtenerUrlImagen(item.producto.imagen)"
+                                [alt]="'Imagen de ' + item.producto.nombre"
+                                />
+                            } @else {
+                                <span class="no-image">Sin imagen</span>
+                            }
+                          </td>
+          <td>{{item.producto.codigoBarra}}</td>
+          <td>
+            <strong>{{ nombreProducto(item) }}</strong>
+          </td>
+          <td>{{ nombreSucursal(item) }}</td>
+          <td>{{ stock(item) }}</td>
+          <td>{{ fecha(item.lotes[0].fechaCaducidad) }}</td>
+          <td>{{ '' }}</td>
+          <td>
+            <p-button
+              [icon]="detalle?.id === item.id ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+              [text]="true"
+              [rounded]="true"
+              aria-label="Ver lotes"
+              (click)="$event.stopPropagation(); seleccionar(item)"
+            ></p-button>
+          </td>
+        </tr>
+        @if (detalle?.id === item.id) {
+          <tr class="detail-row">
+            <td colspan="6">
+              <div class="lot-detail">
+                
+                <h3>Lotes de {{ nombreProducto(item) }}</h3>
+                
+                @if (lotes(item).length) {
+                  <table>
+                    <thead>
+                      <tr>
+                
+                        <th>Número de lote</th>
+                        <th>Fecha de caducidad</th>
+                        <th>Stock disponible</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (lote of lotes(item); track lote.id ?? lote.lote ?? $index) {
+                        <tr>
+                           
+                          <td>{{ lote.numeroLote ?? lote.lote ?? 'Sin lote' }}</td>
+                          <td>{{ lote.fechaCaducidad ?? 'Sin fecha'}}</td>
+                          <td>{{ lote.stockDisponible ?? lote.stock ?? lote.cantidad ?? 0 }}</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                } @else {
+                  <p class="muted">Este producto no tiene lotes disponibles.</p>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </ng-template>
+      <ng-template #emptymessage
+        ><tr>
+          <td colspan="6" class="empty-message">No se encontraron existencias.</td>
+        </tr></ng-template
+      >
+    </p-table>
+  </div>
+</section>

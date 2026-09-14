@@ -1,0 +1,98 @@
+<section class="container inventory-page">
+  <header class="header">
+    <div class="header-info">
+      <p class="eyebrow">Movimientos de almacén</p>
+      <h1>Entradas</h1>
+      <p>Registra mercancía recibida y consulta el historial.</p>
+    </div>
+    <p-button
+      label="Registrar entrada"
+      icon="pi pi-plus"
+      size="large"
+      (click)="abrirFormulario()"
+    ></p-button>
+  </header>
+  @if (error() && !modalVisible) {
+    <div class="state error-state" role="alert">
+      <i class="pi pi-exclamation-circle"></i>{{ error() }}
+    </div>
+  }
+  @if (modalVisible) {
+    <app-nueva-entrada
+      [productos]="productos()"
+      [sucursales]="sucursales()"
+      [user]="userId"
+      (cerrar)="modalVisible = false"
+      (registrada)="entradaRegistrada()"
+    ></app-nueva-entrada>
+  }
+  <div class="filters">
+    <p-select
+      [options]="sucursales()"
+      [(ngModel)]="selectedSucursal"
+      optionLabel="nombre"
+      optionValue="id"
+      placeholder="Todas las sucursales"
+      [showClear]="true"
+      appendTo="body"
+    ></p-select
+    ><p-select
+      [options]="productos()"
+      [(ngModel)]="selectedProducto"
+      optionLabel="nombre"
+      optionValue="id"
+      placeholder="Todos los productos"
+      [showClear]="true"
+      appendTo="body"
+    ></p-select
+    ><input class="field" type="date" [(ngModel)]="filtroDesde" aria-label="Fecha inicial" /><input
+      class="field"
+      type="date"
+      [(ngModel)]="filtroHasta"
+      aria-label="Fecha final"
+    /><p-button
+      label="Filtrar"
+      icon="pi pi-filter"
+      severity="secondary"
+      [outlined]="true"
+      (click)="aplicarFiltros()"
+    ></p-button>
+  </div>
+  <div class="table-container">
+    <p-table
+      [value]="entradas()"
+      [loading]="loading()"
+      [paginator]="true"
+      [lazy]="true"
+      [rows]="limit"
+      [first]="(page() - 1) * limit"
+      [totalRecords]="total()"
+      [rowsPerPageOptions]="[10]"
+      (onPage)="cambiarPagina($event)"
+    >
+      <ng-template #header
+        ><tr>
+          <th>Fecha de registro</th>
+          <th>Producto</th>
+          <th>Sucursal</th>
+          <th>Lote</th>
+          <th>Cantidad</th>
+          <th>Usuario</th>
+        </tr></ng-template
+      ><ng-template #body let-row
+        ><tr>
+          <td>{{ fecha(row.fechaRegistro ?? row.createdAt) }}</td>
+          <td>{{ nombreProducto(row) }}</td>
+          <td>{{ nombreSucursal(row) }}</td>
+          <td>{{ row.lote.lote}}</td>
+          <td>{{ row.cantidad ?? 0 }}</td>
+          <td>{{ nombreUsuario(row) }}</td>
+        </tr></ng-template
+      ><ng-template #emptymessage
+        ><tr>
+          <td colspan="6" class="empty-message">No se encontraron entradas.</td>
+        </tr></ng-template
+      >
+    </p-table>
+  </div>
+</section>

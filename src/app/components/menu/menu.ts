@@ -101,22 +101,22 @@ export class Menu {
         {
           label: 'Existencias',
           icon: 'pi pi-box',
-          routerLink: '/inventario/existencias'
+          routerLink: 'inventario'
         },
         {
           label: 'Entradas',
           icon: 'pi pi-arrow-down',
-          routerLink: '/inventario/entradas'
+          routerLink: 'entradas'
         },
         {
           label: 'Salidas',
           icon: 'pi pi-arrow-up',
-          routerLink: '/inventario/salidas'
+          routerLink: 'salidas'
         },
         {
           label: 'Kardex',
           icon: 'pi pi-book',
-          routerLink: '/inventario/salidas'
+          routerLink: 'kardex'
         }
       ]
     },

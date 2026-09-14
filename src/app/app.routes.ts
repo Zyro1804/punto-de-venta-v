@@ -14,6 +14,10 @@ import { NuevaVenta } from './pages/home/nueva-venta/nueva-venta';
 import { authGuard, roleGuard } from './guards/auth.guard';
 import { AccesoDenegado } from './pages/acceso-denegado/acceso-denegado';
 import { NoEncontrado } from './pages/no-encontrado/no-encontrado';
+import { Kardex } from './pages/home/inventario/kardex/kardex';
+import { Entradas } from './pages/home/inventario/entradas/entradas';
+import { Salidas } from './pages/home/inventario/salidas/salidas';
+import { Inventario } from './pages/home/inventario/inventario/inventario';
 
 export const routes: Routes = [
     {
@@ -36,6 +40,7 @@ export const routes: Routes = [
             { path: 'categorias', component : Categorias},
             { path:'subcategorias', component : Subcategoria},
             { path:'unidades-de-medida', component : UnidadDeMedida},
+            { path:'sucursales', component : Sucursales},
             {
                 path: 'usuarios',
                 component: Usuarios,
@@ -47,9 +52,11 @@ export const routes: Routes = [
                 component: Roles,
                 canActivate: [roleGuard],
                 data: { hiddenForRoles: ['ADMINISTRADOR'] }
-            }
-            ,{ path: 'sucursales', component : Sucursales},
-            {path: 'nueva-venta', component: NuevaVenta},
+            },
+            { path:'kardex', component : Kardex},
+            { path:'entradas', component : Entradas},
+            { path: 'salidas', component : Salidas},
+            { path: 'inventario', component: Inventario},
         ]
     },
     {

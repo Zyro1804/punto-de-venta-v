@@ -1,0 +1,35 @@
+<p-dialog
+  header="Registrar salida"
+  [modal]="true"
+  [visible]="true"
+  [style]="{ width: 'min(600px, 94vw)' }"
+  [breakpoints]="{ '575px': '96vw' }"
+  [draggable]="false"
+  (onHide)="cerrarDialog()"
+>
+  <form class="form-grid" (ngSubmit)="guardar()" #form="ngForm">
+    <div class="field-group">
+      <label for="salida-producto">Producto <span>*</span></label>
+      <p-select id="salida-producto" [options]="productos" [(ngModel)]="productoId" name="productoId" optionLabel="nombre" optionValue="id" placeholder="Selecciona un producto" [filter]="true" filterBy="nombre" [showClear]="true" appendTo="body" required></p-select>
+    </div>
+    <div class="field-group">
+      <label for="salida-sucursal">Sucursal <span>*</span></label>
+      <p-select id="salida-sucursal" [options]="sucursales" [(ngModel)]="sucursalId" name="sucursalId" optionLabel="nombre" optionValue="id" placeholder="Selecciona una sucursal" [filter]="true" filterBy="nombre" [showClear]="true" appendTo="body" required></p-select>
+    </div>
+    <div class="field-group">
+      <label for="salida-cantidad">Cantidad <span>*</span></label>
+      <input id="salida-cantidad" class="field" type="number" min="1" step="1" [(ngModel)]="cantidad" name="cantidad" required>
+    </div>
+    <div class="field-group field-full">
+      <label for="salida-observaciones">Observaciones</label>
+      <textarea id="salida-observaciones" class="field" [(ngModel)]="observaciones" name="observaciones" rows="3" placeholder="Información adicional (opcional)"></textarea>
+    </div>
+    @if (error) {
+      <div class="form-error" role="alert"><i class="pi pi-exclamation-circle"></i>{{ error }}</div>
+    }
+  </form>
+  <ng-template #footer>
+    <p-button label="Cancelar" severity="secondary" [text]="true" (click)="cerrarDialog()"></p-button>
+    <p-button label="Guardar salida" icon="pi pi-check" [loading]="saving" [disabled]="saving || form.invalid" (click)="guardar()"></p-button>
+  </ng-template>
+</p-dialog>
