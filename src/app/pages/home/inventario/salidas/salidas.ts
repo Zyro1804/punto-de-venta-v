@@ -13,6 +13,7 @@ import { SalidasService } from '../../../../services/inventario/salidas-service'
 import { ProductoService } from '../../../../services/producto/producto-service';
 import { SucursalesService } from '../../../../services/sucursales/sucursales-service';
 import { NuevaSalida } from '../../../../components/modal/nueva-salida/nueva-salida';
+import { AuthService } from '../../../../services/auth/auth-service';
 
 @Component({
   imports: [CommonModule, FormsModule, ButtonModule, NuevaSalida, SelectModule, TableModule],
@@ -36,16 +37,26 @@ export class Salidas {
   selectedSucursal: string | number | null = null;
   filtroDesde = '';
   filtroHasta = '';
+  userId : any;
 
   private readonly service = inject(SalidasService);
   private readonly productoService = inject(ProductoService);
   private readonly sucursalesService = inject(SucursalesService);
+  private readonly authService = inject(AuthService)
 
 
   ngOnInit(): void {
     this.cargarCatalogos();
     this.cargarSalidas();
+    this.getUserId();
   }
+
+  
+  getUserId(){
+   const resp = this.authService.getTokenData()
+   this.userId= resp?.['idUser']
+  }
+
   async cargarCatalogos(): Promise<void> {
     try {
       const [productos, sucursales] = await Promise.all([

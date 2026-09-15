@@ -18,6 +18,7 @@ import { AuthService } from '../../../services/auth/auth-service';
 export class NuevaSalida {
   @Input() productos: CatalogoOption[] = [];
   @Input() sucursales: CatalogoOption[] = [];
+  @Input() user : any;
   @Output() cerrar = new EventEmitter<void>();
   @Output() registrada = new EventEmitter<unknown[]>();
 
@@ -43,7 +44,7 @@ export class NuevaSalida {
     const payload: SalidaPayload = {
       productoId: this.productoId,
       sucursalId: this.sucursalId,
-      usuarioId: this.usuarioId(),
+      usuarioId: this.user,
       cantidad: this.cantidad,
       ...(this.observaciones.trim() ? { observaciones: this.observaciones.trim() } : {}),
     };
@@ -70,8 +71,4 @@ export class NuevaSalida {
     if (!this.saving) this.cerrar.emit();
   }
 
-  private usuarioId(): string | number {
-    const data = this.authService.getTokenData();
-    return (data?.['id'] ?? data?.['userId'] ?? data?.['sub'] ?? '') as string | number;
-  }
 }

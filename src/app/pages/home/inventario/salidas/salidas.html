@@ -21,6 +21,7 @@
     <app-nueva-salida
       [productos]="productos()"
       [sucursales]="sucursales()"
+      [user]="userId"
       (cerrar)="modalVisible = false"
       (registrada)="salidaRegistrada($event)"
     ></app-nueva-salida>
